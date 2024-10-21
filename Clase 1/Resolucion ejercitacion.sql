@@ -111,8 +111,100 @@ FULL OUTER JOIN ORDER_DETAILS od
 ON o.order_id = od.order_id;
 
 -- 19. Obtener la lista de todos los nombres de los clientes y los nombres de los proveedores
-SELECT c.CONTACT_NAME 
-FROM CUSTOMERS c 
+SELECT c.COMPANY_NAME 
+FROM CUSTOMERS c
 UNION
-SELECT s.CONTACT_NAME
+SELECT s.company_name
 FROM SUPPLIERS s
+
+-- 20. Obtener la lista de los nombres de todos los empleados y los nombres de los gerentes de departamento
+SELECT e.FIRST_NAME 
+FROM EMPLOYEES e
+UNION
+SELECT e.FIRST_NAME
+FROM employees e
+WHERE e.title = 'Sales Manager'
+
+-- 21. Obtener los productos del stock que han sido vendidos
+SELECT p.PRODUCT_NAME, p.PRODUCT_ID
+FROM PRODUCTS p
+WHERE p.PRODUCT_ID IN (
+	SELECT od.product_id
+	FROM ORDER_DETAILS od
+	WHERE od.quantity > 0
+)
+
+-- 22. Obtener los clientes que han realizado un pedido con destino a Argentina
+SELECT c.COMPANY_NAME
+FROM customers c
+WHERE c.CUSTOMER_ID IN (
+	SELECT o.customer_id
+	FROM orders o
+	WHERE o.ship_country = 'Argentina'
+)
+
+-- 23. Obtener el nombre de los productos que nunca han sido pedidos por clientes de Francia
+SELECT P.PRODUCT_NAME
+FROM PRODUCTS P
+WHERE P.PRODUCT_ID NOT IN (
+	SELECT OD.product_id
+	FROM ORDER_DETAILS OD
+	WHERE OD.order_id IN (
+		SELECT O.order_id
+		FROM ORDERS O 
+		WHERE o.ship_country = 'France'
+	)
+)
+
+-- 24. Obtener la cantidad de productos vendidos por identificador de orden
+SELECT OD.ORDER_ID, SUM(OD.QUANTITY) AS sum
+FROM ORDER_DETAILS OD 
+GROUP BY OD.ORDER_ID 
+
+-- 25. Obtener el promedio de productos en stock por producto
+SELECT P.PRODUCT_NAME, AVG(P.UNITS_IN_STOCK) AS Promedio
+FROM PRODUCTS P 
+GROUP BY P.PRODUCT_NAME 
+
+-- 26. Cantidad de productos en stock por producto, donde haya más de 100 productos en stock
+SELECT P.PRODUCT_NAME, SUM(P.UNITS_IN_STOCK) AS STOCK
+FROM PRODUCTS P 
+GROUP BY P.PRODUCT_NAME 
+HAVING SUM(P.UNITS_IN_STOCK) > 100
+
+-- 27. Obtener el promedio de pedidos por cada compañía y solo mostrar aquellas con un promedio de pedidos superior a 10
+SELECT o.CUSTOMER_ID, AVG(od.QUANTITY) AS average_products
+FROM ORDER_DETAILS OD 
+LEFT JOIN orders o
+ON o.order_id = od.order_id
+GROUP BY o.CUSTOMER_ID
+HAVING AVG(od.QUANTITY) > 10
+
+SELECT c.COMPANY_NAME, AVG(od.QUANTITY) AS average_products
+FROM orders o
+LEFT JOIN order_details od
+ON o.order_id = od.order_id
+LEFT JOIN customers c
+ON o.customer_id = c.customer_id
+GROUP BY c.COMPANY_NAME
+HAVING AVG(od.QUANTITY) > 10
+
+-- 28. Obtener el nombre del producto y su categoría, pero muestre "Discontinued" en lugar del nombre de la categoría si el producto ha sido descontinuado
+SELECT p.product_name,
+CASE
+	WHEN p.discontinued = 1 THEN 'Discontinued'
+ELSE
+	c.category_name	
+END AS product_category
+FROM products p
+LEFT JOIN categories c
+ON p.category_id = c.category_id
+
+-- 29. Obtener el nombre del empleado y su título, pero muestre "Gerente de Ventas" en lugar del título si el empleado es un gerente de ventas (Sales Manager)
+SELECT e.first_name, e.last_name,
+CASE
+	WHEN e.title = 'Sales Manager' THEN 'Gerente de Ventas'
+ELSE
+	e.title
+END AS job_title
+FROM employees e
