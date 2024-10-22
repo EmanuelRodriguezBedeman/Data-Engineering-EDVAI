@@ -173,21 +173,12 @@ GROUP BY P.PRODUCT_NAME
 HAVING SUM(P.UNITS_IN_STOCK) > 100
 
 -- 27. Obtener el promedio de pedidos por cada compañía y solo mostrar aquellas con un promedio de pedidos superior a 10
-SELECT o.CUSTOMER_ID, AVG(od.QUANTITY) AS average_products
-FROM ORDER_DETAILS OD 
-LEFT JOIN orders o
-ON o.order_id = od.order_id
-GROUP BY o.CUSTOMER_ID
-HAVING AVG(od.QUANTITY) > 10
-
-SELECT c.COMPANY_NAME, AVG(od.QUANTITY) AS average_products
+SELECT c.company_name, avg(o.order_id) AS averageorders
 FROM orders o
-LEFT JOIN order_details od
-ON o.order_id = od.order_id
 LEFT JOIN customers c
 ON o.customer_id = c.customer_id
-GROUP BY c.COMPANY_NAME
-HAVING AVG(od.QUANTITY) > 10
+GROUP BY c.company_name
+HAVING avg(o.order_id) > 10
 
 -- 28. Obtener el nombre del producto y su categoría, pero muestre "Discontinued" en lugar del nombre de la categoría si el producto ha sido descontinuado
 SELECT p.product_name,
