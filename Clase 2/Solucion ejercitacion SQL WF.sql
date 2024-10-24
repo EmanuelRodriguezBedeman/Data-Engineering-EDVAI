@@ -43,3 +43,14 @@ SELECT
 	p.category_id,
 	MAX(p.unit_price) OVER (PARTITION BY p.category_id)
 FROM products p
+
+-- 6. Obtener el ranking de los productos más vendidos
+SELECT
+	ROW_NUMBER(p.product_name, 1) OVER (PARTITION BY p.product_name) AS ranking,
+	p.product_name,
+	SUM(od.quantity) AS totalquantity
+FROM order_details od
+INNER JOIN products p
+ON p.product_id = od.product_id
+GROUP BY p.product_name
+ORDER BY SUM(od.quantity) DESC
