@@ -8,9 +8,7 @@ ON p.category_id = c.category_id;
 -- 2. Obtener el promedio de venta de cada cliente
 SELECT 
 	AVG(od.unit_price * od.quantity) OVER (PARTITION BY o.customer_id) AS avgorderamount,
-	o.order_id,
-	o.customer_id,
-	od.product_id	
+	*
 FROM orders o
 LEFT JOIN order_details od
 ON o.order_id = od.order_id;
@@ -48,7 +46,7 @@ FROM products p;
 SELECT 
     ROW_NUMBER() OVER (ORDER BY SUM(od.quantity) DESC) AS ranking,
     p.product_name,
-    SUM(od.quantity)
+    SUM(od.quantity) AS totalquantity
 FROM order_details od
 INNER JOIN products p
 ON p.product_id = od.product_id
@@ -96,19 +94,19 @@ SELECT
     o.freight,
     SUM(o.freight) OVER (PARTITION BY o.ship_country) AS totalshippingcosts
 FROM orders o 
-ORDER BY o.ship_country, o.order_id
+ORDER BY o.ship_country, o.order_id;
 
 -- 12. Ranking de ventas por cliente
 SELECT 
     c.customer_id,
     c.company_name,
-    SUM(od.quantity * od.unit_price),
-    RANK() OVER (ORDER BY SUM(od.quantity * od.unit_price) DESC) AS Rank
+    SUM(od.quantity * od.unit_price) AS "Total Sales",
+    RANK() OVER (ORDER BY SUM(od.quantity * od.unit_price) DESC) AS "Rank"
 FROM customers c 
 INNER JOIN orders o ON c.customer_id = o.customer_id
 INNER JOIN order_details od ON od.order_id = o.order_id
 GROUP BY c.customer_id
-ORDER BY SUM(od.quantity * od.unit_price) DESC
+ORDER BY SUM(od.quantity * od.unit_price) DESC;
 
 -- 13. Ranking de empleados por fecha de contratacion
 SELECT
@@ -116,13 +114,56 @@ SELECT
 	e.first_name,
 	e.last_name,
 	e.hire_date,
-	RANK() OVER (ORDER BY e.hire_date)
-FROM employees e
+	RANK() OVER (ORDER BY e.hire_date) AS "Rank"
+FROM employees e;
 
 -- 14. Ranking de productos por precio unitario
 SELECT
 	p.product_id,
 	p.product_name,
 	p.unit_price,
-	RANK() OVER (ORDER BY p.unit_price DESC)
+	RANK() OVER (ORDER BY p.unit_price DESC) AS "Rank"
+FROM products p;
+
+-- 15. Mostrar por cada producto de una orden, la cantidad vendida y la cantidad vendida del producto previo
+SELECT
+	od.order_id,
+	od.product_id,
+	od.quantity,
+	LAG(od.quantity) OVER (ORDER BY od.order_id) AS prevquantity
+FROM order_details od;
+
+-- 16. Obtener un listado de ordenes mostrando el id de la orden, fecha de orden, id del cliente y última fecha de orden
+SELECT 
+	o.order_id,
+	o.order_date,
+	o.customer_id,
+	LAG(o.order_date) OVER (PARTITION BY o.customer_id ORDER BY o.order_date) AS lastorderdate
+FROM orders o
+ORDER BY o.customer_id;
+
+-- 17. Obtener un listado de productos que contengan: id de producto, nombre del producto, precio unitario, precio del producto anterior, diferencia entre el precio del producto y precio del producto anterior
+SELECT
+	p.product_id,
+	p.product_name,
+	p.unit_price,
+	LAG(p.unit_price) OVER (ORDER BY p.product_id) AS lastunitprice,
+	LAG(p.unit_price) OVER (ORDER BY p.product_id) - p.unit_price AS pricedifference 
+FROM products p;
+
+-- 18. Obtener un listado que muestra el precio de un producto junto con el precio del producto siguiente
+SELECT
+	p.product_name,
+	p.unit_price,
+	LEAD(p.unit_price) OVER (ORDER BY p.product_id) AS nextprice
+FROM products p;
+
+-- 19. Obtener un listado que muestra el total de ventas por categoría de producto junto con el total de ventas de la categoría siguiente
+SELECT 
+	c.category_name,
+	SUM(od.quantity * od.unit_price) AS totalsales,
+	LEAD(SUM(od.quantity * od.unit_price)) OVER (ORDER BY c.category_name) AS nexttototalsales
 FROM products p
+INNER JOIN categories c ON p.category_id = c.category_id
+INNER JOIN order_details od ON p.product_id = od.product_id
+GROUP BY c.category_name;
