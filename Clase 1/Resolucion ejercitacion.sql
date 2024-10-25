@@ -1,27 +1,27 @@
 -- 1. Obtener una lista de todos los títulos de contacto distintos
-SELECT DISTINCT category_name
-FROM CATEGORIES C;
+SELECT DISTINCT c.category_name
+FROM categories c;
 
 -- 2. Obtener una lista de todos los títulos de contacto distintos
-SELECT DISTINCT region
-FROM CUSTOMERS C;
+SELECT DISTINCT c.region
+FROM customers c;
 
 -- 3. Obtener una lista de todos los títulos de contacto distintos
-SELECT DISTINCT CONTACT_TITLE 
-FROM CUSTOMERS C;
+SELECT DISTINCT c.contact_title
+FROM customers c;
 
 -- 4. Obtener una lista de todos los títulos de contacto distintos
 SELECT *
-FROM CUSTOMERS C 
+FROM customers c
 ORDER BY c.country;
 
 -- 5. Obtener una lista de todos los pedidos, ordenados por id del empleado y fecha del pedido
 SELECT *
-FROM ORDERS O
-ORDER BY o.EMPLOYEE_ID, o.ORDER_DATE; 
+FROM orders o
+ORDER BY o.employee_id, o.order_date; 
 
 -- 6. Insertar un nuevo cliente en la tabla Customers
-INSERT INTO CUSTOMERS
+INSERT INTO customers
 VALUES (
 	'GRLA',
 	'Grela company',
@@ -43,134 +43,134 @@ VALUES (6, 'Northeast');
 -- 8. Obtener todos los clientes de la tabla Customers donde el campo Región es NULL
 SELECT *
 FROM customers c
-WHERE c.REGION  ISNULL;
+WHERE c.region  ISNULL;
 
 -- 9. Obtener Product_Name y Unit_Price de la tabla Products, y si Unit_Price es NULL, use el precio estándar de $10 en su lugar
-SELECT p.PRODUCT_NAME, COALESCE(p.UNIT_PRICE, 10) AS price
-FROM PRODUCTS p;
+SELECT p.product_name, COALESCE(p.unit_price, 10) AS price
+FROM products p;
 
 -- 10. Obtener el nombre de la empresa, el nombre del contacto y la fecha del pedido de todos los pedidos
-SELECT c.COMPANY_NAME, c.CONTACT_NAME, o.ORDER_DATE
-FROM CUSTOMERS C 
+SELECT c.company_name, c.contact_name, o.order_date
+FROM customers c
 INNER JOIN ORDERS O
-ON c.CUSTOMER_ID = o.CUSTOMER_ID;
+ON c.customer_id = o.customer_id;
 
 -- 11. Obtener la identificación del pedido, el nombre del producto y el descuento de todos los detalles del pedido y productos
-SELECT od.ORDER_ID, p.PRODUCT_NAME, od.DISCOUNT
-FROM ORDER_DETAILS OD
-INNER JOIN PRODUCTS P
-ON od.PRODUCT_ID = p.PRODUCT_ID;
+SELECT od.order_id, p.product_name, od.discount
+FROM order_details od
+INNER JOIN products p
+ON od.product_id = p.product_id;
 
 -- 12. Obtener el identificador del cliente, el nombre de la compañía, el identificador y la fecha de la orden de todas las órdenes y aquellos clientes que hagan match
-SELECT c.CUSTOMER_ID, c.COMPANY_NAME, o.ORDER_ID, o.ORDER_DATE
-FROM CUSTOMERS C
-LEFT JOIN ORDERS O
-ON c.CUSTOMER_ID = o.CUSTOMER_ID;
+SELECT c.customer_id, c.company_name, o.order_id, o.order_date
+FROM customers c
+LEFT JOIN orders o
+ON c.customer_id = o.customer_id;
 
 -- 13. Obtener el identificador del empleados, apellido, identificador de territorio y descripción del territorio de todos los empleados y aquellos que hagan match en territorios
-SELECT  e.EMPLOYEE_ID, 
-		e.LAST_NAME, 
-		t.TERRITORY_ID, 
-		t.TERRITORY_DESCRIPTION 
+SELECT  e.employee_id,
+		e.last_name,
+		t.territory_id,
+		t.territory_description
 FROM 
-	EMPLOYEES e
+	employees e
 LEFT JOIN 
-	EMPLOYEE_TERRITORIES et ON e.EMPLOYEE_ID = et.EMPLOYEE_ID
+	employee_territories et ON e.employee_id = et.employee_id
 LEFT JOIN 
-	TERRITORIES t ON et.TERRITORY_ID = t.TERRITORY_ID;
+	territories t ON et.territory_id = t.territory_id;
 	
 -- 14. Obtener el identificador de la orden y el nombre de la empresa de todos las órdenes y aquellos clientes que hagan match
-SELECT o.ORDER_ID, c.COMPANY_NAME 
+SELECT o.order_id, c.company_name 
 FROM customers c
-LEFT JOIN ORDERS o
-ON o.CUSTOMER_ID = c.CUSTOMER_ID;
+LEFT JOIN orders o
+ON o.customer_id = c.customer_id;
 
 -- 15. Obtener el identificador de la orden, y el nombre de la compañía de todas las órdenes y aquellos clientes que hagan match
-SELECT o.ORDER_ID, c.COMPANY_NAME 
-FROM ORDERS o
+SELECT o.order_id, c.company_name 
+FROM orders o
 RIGHT JOIN customers c
-ON o.CUSTOMER_ID = c.CUSTOMER_ID;
+ON o.customer_id = c.customer_id;
 
 -- 16. Obtener el nombre de la compañía, y la fecha de la orden de todas las órdenes y aquellos transportistas que hagan match. Solamente para aquellas ordenes del año 1996
-SELECT s.COMPANY_NAME, o.ORDER_DATE 
-FROM ORDERS o
-RIGHT JOIN SHIPPERS s
-ON o.SHIP_VIA = s.SHIPPER_ID
-WHERE EXTRACT(YEAR FROM o.ORDER_DATE) = 1996;
+SELECT s.company_name, o.order_date 
+FROM orders o
+RIGHT JOIN shippers s
+ON o.ship_via = s.shipper_id
+WHERE EXTRACT(YEAR FROM o.order_date) = 1996;
 
 -- 17. Obtener nombre y apellido del empleados y el identificador de territorio, de todos los empleados y aquellos que hagan match o no de employee_territories
-SELECT e.FIRST_NAME, e.LAST_NAME, et.TERRITORY_ID 
-FROM EMPLOYEES e
-FULL OUTER JOIN EMPLOYEE_TERRITORIES et
-ON e.EMPLOYEE_ID = et.EMPLOYEE_ID;
+SELECT e.first_name, e.last_name, et.territory_id 
+FROM employees e
+FULL OUTER JOIN employee_territories et
+ON e.employee_id = et.employee_id;
 
 -- 18. Obtener el identificador de la orden, precio unitario, cantidad y total de todas las órdenes y aquellas órdenes detalles que hagan match o no
-SELECT o.order_id, od.unit_price, od.quantity, od.UNIT_PRICE * od.QUANTITY AS total 
-FROM ORDERS o
-FULL OUTER JOIN ORDER_DETAILS od
+SELECT o.order_id, od.unit_price, od.quantity, od.unit_price * od.quantity AS total 
+FROM orders o
+FULL OUTER JOIN order_details od
 ON o.order_id = od.order_id;
 
 -- 19. Obtener la lista de todos los nombres de los clientes y los nombres de los proveedores
-SELECT c.COMPANY_NAME 
-FROM CUSTOMERS c
+SELECT c.company_name
+FROM customers c
 UNION
 SELECT s.company_name
-FROM SUPPLIERS s
+FROM suppliers s;
 
 -- 20. Obtener la lista de los nombres de todos los empleados y los nombres de los gerentes de departamento
-SELECT e.FIRST_NAME 
-FROM EMPLOYEES e
-UNION
-SELECT e.FIRST_NAME
+SELECT e.first_name
 FROM employees e
-WHERE e.title = 'Sales Manager'
+UNION
+SELECT e.first_name
+FROM employees e
+WHERE e.title = 'Sales Manager';
 
 -- 21. Obtener los productos del stock que han sido vendidos
-SELECT p.PRODUCT_NAME, p.PRODUCT_ID
-FROM PRODUCTS p
-WHERE p.PRODUCT_ID IN (
+SELECT p.product_name, p.product_id
+FROM products p
+WHERE p.product_id IN (
 	SELECT od.product_id
-	FROM ORDER_DETAILS od
+	FROM order_details od
 	WHERE od.quantity > 0
-)
+);
 
 -- 22. Obtener los clientes que han realizado un pedido con destino a Argentina
-SELECT c.COMPANY_NAME
+SELECT c.company_name
 FROM customers c
-WHERE c.CUSTOMER_ID IN (
+WHERE c.customer_id IN (
 	SELECT o.customer_id
 	FROM orders o
 	WHERE o.ship_country = 'Argentina'
-)
+);
 
 -- 23. Obtener el nombre de los productos que nunca han sido pedidos por clientes de Francia
-SELECT P.PRODUCT_NAME
-FROM PRODUCTS P
-WHERE P.PRODUCT_ID NOT IN (
-	SELECT OD.product_id
-	FROM ORDER_DETAILS OD
-	WHERE OD.order_id IN (
+SELECT P.product_name
+FROM products p
+WHERE P.product_id NOT IN (
+	SELECT od.product_id
+	FROM order_details od
+	WHERE od.order_id IN (
 		SELECT O.order_id
-		FROM ORDERS O 
+		FROM orders o
 		WHERE o.ship_country = 'France'
 	)
-)
+);
 
 -- 24. Obtener la cantidad de productos vendidos por identificador de orden
-SELECT OD.ORDER_ID, SUM(OD.QUANTITY) AS sum
-FROM ORDER_DETAILS OD 
-GROUP BY OD.ORDER_ID 
+SELECT od.order_id, SUM(od.quantity) AS sum
+FROM order_details od
+GROUP BY od.order_id;
 
 -- 25. Obtener el promedio de productos en stock por producto
-SELECT P.PRODUCT_NAME, AVG(P.UNITS_IN_STOCK) AS Promedio
-FROM PRODUCTS P 
-GROUP BY P.PRODUCT_NAME 
+SELECT p.product_name, AVG(p.units_in_stock) AS Promedio
+FROM products p
+GROUP BY p.product_name;
 
 -- 26. Cantidad de productos en stock por producto, donde haya más de 100 productos en stock
-SELECT P.PRODUCT_NAME, SUM(P.UNITS_IN_STOCK) AS STOCK
-FROM PRODUCTS P 
-GROUP BY P.PRODUCT_NAME 
-HAVING SUM(P.UNITS_IN_STOCK) > 100
+SELECT p.product_name, SUM(p.units_in_stock) AS STOCK
+FROM products p
+GROUP BY p.product_name
+HAVING SUM(p.units_in_stock) > 100;
 
 -- 27. Obtener el promedio de pedidos por cada compañía y solo mostrar aquellas con un promedio de pedidos superior a 10
 SELECT c.company_name, avg(o.order_id) AS averageorders
@@ -178,7 +178,7 @@ FROM orders o
 LEFT JOIN customers c
 ON o.customer_id = c.customer_id
 GROUP BY c.company_name
-HAVING avg(o.order_id) > 10
+HAVING AVG(o.order_id) > 10;
 
 -- 28. Obtener el nombre del producto y su categoría, pero muestre "Discontinued" en lugar del nombre de la categoría si el producto ha sido descontinuado
 SELECT p.product_name,
@@ -189,7 +189,7 @@ ELSE
 END AS product_category
 FROM products p
 LEFT JOIN categories c
-ON p.category_id = c.category_id
+ON p.category_id = c.category_id;
 
 -- 29. Obtener el nombre del empleado y su título, pero muestre "Gerente de Ventas" en lugar del título si el empleado es un gerente de ventas (Sales Manager)
 SELECT e.first_name, e.last_name,
@@ -198,4 +198,4 @@ CASE
 ELSE
 	e.title
 END AS job_title
-FROM employees e
+FROM employees e;
