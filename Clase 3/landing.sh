@@ -1,9 +1,6 @@
 # Indica que interprete debe usar el script
 #!/bin/bash
 
-# Genera permisos para ejecutar el script
-su hadoop
-
 # Descarga el archivo a la carpeta landing
 wget -P /home/hadoop/landing https://github.com/fpineyro/homework-0/blob/master/starwars.csv
 
