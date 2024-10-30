@@ -1,7 +1,7 @@
 # Solucion ejercicios SQL Clase 1
 
-- Los enunciados pueden encontrarse en el .pdf
-- Las consultas para los mismos dentro del .sql o aqui abajo:
+- Los enunciados pueden encontrarse en el [.pdf](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%201/Clase%201%20-%20Ejercicios%20SQL.pdf)
+- Las consultas para los mismos dentro del [.sql](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%201/Resolucion%20ejercitacion.sql) o aqui abajo:
 
 ```
 -- 1. Obtener una lista de todos los títulos de contacto distintos

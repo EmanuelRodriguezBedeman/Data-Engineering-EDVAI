@@ -1,7 +1,7 @@
 # Solucion ejercicios SQL Window Functions clase 2
 
-- Las consignas y prints pueden encontrarse en el .pdf.
-- Las consultas pueden encontrarse en el .sql o aqui debajo:
+- Las consignas y prints pueden encontrarse en el [.pdf](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%202/Clase%202%20-%20Ejercicios%20SQL%20WF.pdf).
+- Las consultas pueden encontrarse en el [.sql](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%202/Solucion%20ejercitacion%20SQL%20WF.sql) o aqui debajo:
 
 ```
 -- 1. Obtener el promedio de precios por cada categoría de producto.
