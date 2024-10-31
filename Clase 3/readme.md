@@ -1,4 +1,4 @@
-# Ejercitacion resuelta de la clase 3.
+# Solucion ejercitacion Clase 3.
 
 De querer replicar el script en su contenedor, recuerde descargar la **imagen de hadoop** correspondiente al [Bootcamp de Data Engineering de EDVAI](https://www.escueladedatosvivos.ai/cursos/data-engineering-creando-el-pipeline-de-datos) y crear su contenedor segun lo indicado en el curso.
 
