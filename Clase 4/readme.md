@@ -42,4 +42,30 @@ sqoop import \
     --delete-target-dir
 ```
 
+![Solucion Ejercicio 3, primera parte del print](image-2.png)
+
+![Solucion Ejercicio 3, segunda parte del print](image-3.png)
+
+![Solucion Ejercicio 3, archivo en HDFS](image-4.png)
+
 ###  **4)** Importar un archivo .parquet que contenga solo los productos con mas 20 unidades
+
+```
+sqoop import \
+    --connect jdbc:postgresql://172.17.0.3:5432/northwind \
+    --username postgres\
+    --query "select product_id, product_name from products where units_in_stock > 20 AND \$CONDITIONS"\
+    --m 1 \
+    --P \
+    --target-dir /sqoop/ingest \
+    --as-parquetfile \
+    --delete-target-dir
+```
+
+![Solucion Ejercicio 4, primer parte del print](image-5.png)
+
+![Solucion Ejercicio 4, segunda parte del print](image-6.png)
+
+![Solucion Ejercicio 4, tercera parte del print](image-7.png)
+
+![Solucion Ejercicio 4, chequeando que este el archivo en HDFS](image-8.png)
