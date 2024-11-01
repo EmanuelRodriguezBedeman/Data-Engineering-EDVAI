@@ -73,3 +73,15 @@ sqoop import \
 #### Archivo .parquet en HDFS
 
 ![Solucion Ejercicio 4, chequeando que este el archivo en HDFS](image-8.png)
+
+---
+
+## Ejercicios Nifi
+
+### 1) En el shell de Nifi, crear un script `.sh` que descargue el archivo `starwars.csv` al directorio `/home/nifi/ingest` (crearlo si es necesario). Ejecutarlo con `./home/nifi/ingest/ingest.sh`
+
+URL: `https://github.com/fpineyro/homework-0/blob/master/starwars.csv`
+
+Script creado como [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh)
+
+2) 
