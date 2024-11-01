@@ -78,11 +78,9 @@ sqoop import \
 
 ## Ejercicios Nifi
 
-### 1) En el shell de Nifi, crear un script `.sh` que descargue el archivo `starwars.csv` al directorio `/home/nifi/ingest` (crearlo si es necesario). Ejecutarlo con `./home/nifi/ingest/ingest.sh`
+### 1. Script de descarga starwars.csv
 
-URL: `https://github.com/fpineyro/homework-0/blob/master/starwars.csv`
-
-Script: [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh)
+> ↓ **Script**: [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh) ↓
 
 ```
 # Indica que interprete debe usar el script
@@ -92,4 +90,28 @@ Script: [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-
 wget -P /home/nifi/ingest https://github.com/fpineyro/homework-0/blob/master/starwars.csv
 ```
 
-1) 
+![Script dentro de ingest](image-11.png)
+
+### 2. Procesos Nifi completo
+
+![Proceso Nifi](image-9.png)
+
+#### A. Toma archivo starwars.csv del directorio home/nifi/ingest
+
+![getFile home/nifi/ingest](image-12.png)
+
+#### B. Mover el archivo starwars.csv a home/nifi/bucket
+
+![putFile home/nifi/bucket](image-13.png)
+
+#### C. Tomar el archivo desde este ultimo directorio
+
+![getFile home/nifi/bucket](image-14.png)
+
+#### D. Ingestarlo en HDFS/nifi
+
+![PutHDFS /nifi](image-15.png)
+
+#### Arhivo starwars.parquet en hdfs/nifi
+
+![alt text](image-16.png)
