@@ -1,7 +1,7 @@
 # Solucion Ejercicios Clase 4 
 
-- Archivo con las consignas
-- Consigna con solucion:
+- [Consignas](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/Clase%204%20-%20Ejercicios%20Sqoop%20y%20Nifi%20-%20Alumnos.pdf)
+- Soluciones:
 
 ## Ejercicios Sqoop
 
