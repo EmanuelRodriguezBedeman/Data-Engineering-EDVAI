@@ -13,7 +13,7 @@ sqoop list-tables \
 --username postgres -P
 ```
 
-![Solucion ejercicio 1](image.png)
+![Solucion ejercicio 1](imgs/image.png)
 
 ### **2)** Mostrar los clientes de Argentina
 
@@ -25,7 +25,7 @@ sqoop eval \
 --P \
 --query "select company_name, contact_name from customers where country =  Argentina'"
 ```
-![Solucion ejercicio 2](image-1.png)
+![Solucion ejercicio 2](imgs/image-1.png)
 
 ### **3)** Importar un archivo .parquet que contenga toda la tabla orders. Luego ingestar el archivo a HDFS (*carpeta /sqoop/ingest*)
 
@@ -42,13 +42,13 @@ sqoop import \
     --delete-target-dir
 ```
 
-![Solucion Ejercicio 3, primera parte del print](image-2.png)
+![Solucion Ejercicio 3, primera parte del print](imgs/image-2.png)
 
-![Solucion Ejercicio 3, segunda parte del print](image-3.png)
+![Solucion Ejercicio 3, segunda parte del print](imgs/image-3.png)
 
 #### Archivo .parquet en HDFS
 
-![Solucion Ejercicio 3, archivo en HDFS](image-4.png)
+![Solucion Ejercicio 3, archivo en HDFS](imgs/image-4.png)
 
 ###  **4)** Importar un archivo .parquet que contenga solo los productos con mas 20 unidades
 
@@ -64,15 +64,15 @@ sqoop import \
     --delete-target-dir
 ```
 
-![Solucion Ejercicio 4, primer parte del print](image-5.png)
+![Solucion Ejercicio 4, primer parte del print](imgs/image-5.png)
 
-![Solucion Ejercicio 4, segunda parte del print](image-6.png)
+![Solucion Ejercicio 4, segunda parte del print](imgs/image-6.png)
 
-![Solucion Ejercicio 4, tercera parte del print](image-7.png)
+![Solucion Ejercicio 4, tercera parte del print](imgs/image-7.png)
 
 #### Archivo .parquet en HDFS
 
-![Solucion Ejercicio 4, chequeando que este el archivo en HDFS](image-8.png)
+![Solucion Ejercicio 4, chequeando que este el archivo en HDFS](imgs/image-8.png)
 
 ---
 
@@ -90,28 +90,28 @@ sqoop import \
 wget -P /home/nifi/ingest https://github.com/fpineyro/homework-0/blob/master/starwars.csv
 ```
 
-![Script dentro de ingest](image-11.png)
+![Script dentro de ingest](imgs/image-11.png)
 
 ### 2. Procesos Nifi completo
 
-![Proceso Nifi](image-9.png)
+![Proceso Nifi](imgs/image-9.png)
 
 #### A. Toma archivo starwars.csv del directorio home/nifi/ingest
 
-![getFile home/nifi/ingest](image-12.png)
+![getFile home/nifi/ingest](imgs/image-12.png)
 
 #### B. Mover el archivo starwars.csv a home/nifi/bucket
 
-![putFile home/nifi/bucket](image-13.png)
+![putFile home/nifi/bucket](imgs/image-13.png)
 
 #### C. Tomar el archivo desde este ultimo directorio
 
-![getFile home/nifi/bucket](image-14.png)
+![getFile home/nifi/bucket](imgs/image-14.png)
 
 #### D. Ingestarlo en HDFS/nifi
 
-![PutHDFS /nifi](image-15.png)
+![PutHDFS /nifi](imgs/image-15.png)
 
 #### Arhivo starwars.parquet en hdfs/nifi
 
-![alt text](image-16.png)
+![Archivo starwars.parquet en hdfs/nifi](imgs/image-16.png)
