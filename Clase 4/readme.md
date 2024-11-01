@@ -46,6 +46,8 @@ sqoop import \
 
 ![Solucion Ejercicio 3, segunda parte del print](image-3.png)
 
+#### Archivo .parquet en HDFS
+
 ![Solucion Ejercicio 3, archivo en HDFS](image-4.png)
 
 ###  **4)** Importar un archivo .parquet que contenga solo los productos con mas 20 unidades
@@ -67,5 +69,7 @@ sqoop import \
 ![Solucion Ejercicio 4, segunda parte del print](image-6.png)
 
 ![Solucion Ejercicio 4, tercera parte del print](image-7.png)
+
+#### Archivo .parquet en HDFS
 
 ![Solucion Ejercicio 4, chequeando que este el archivo en HDFS](image-8.png)
