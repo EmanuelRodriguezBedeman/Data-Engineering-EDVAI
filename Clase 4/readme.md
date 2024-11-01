@@ -82,6 +82,14 @@ sqoop import \
 
 URL: `https://github.com/fpineyro/homework-0/blob/master/starwars.csv`
 
-Script creado como [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh)
+Script: [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh)
 
-2) 
+```
+# Indica que interprete debe usar el script
+#!/bin/bash
+
+# Descarga el archivo a la carpeta landing
+wget -P /home/nifi/ingest https://github.com/fpineyro/homework-0/blob/master/starwars.csv
+```
+
+1) 
