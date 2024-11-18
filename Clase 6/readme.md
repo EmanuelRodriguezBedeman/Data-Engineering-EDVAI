@@ -1,6 +1,6 @@
-## Resolucion ejercicios
+# Resolucion ejercicios
 
-1. En Hive, crear las siguientes tablas (internas) en la base de datos `tripdata` en hive
+## 1. En Hive, crear las siguientes tablas (internas) en la base de datos `tripdata` en hive
 
 * `payments(VendorID, tpep_pickup_datetetime, payment_type, total_amount)`
 
@@ -62,3 +62,21 @@ location '/tables/external/tripsdb';
 
 ![Creacion tabla 'distance' en Hive](imgs/image4.png)
 
+
+## 2. En Hive, hacer un ‘describe’ de las tablas passengers y distance
+
+* Tabla 'passengers'
+
+```
+DESCRIBE passengers;
+```
+
+![Descripcion tabla 'passengers'](imgs/image5.png)
+
+* Tabla 'distance'
+
+```
+DESCRIBE distance;
+```
+
+![Descripcion tabla 'distance'](imgs/image6.png)
