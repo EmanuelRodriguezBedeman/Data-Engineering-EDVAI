@@ -1,6 +1,6 @@
 ## Resolucion ejercicios
 
-1. En Hive, crear las siguientes tablas (internas) en la base de datos tripdata en hive
+1. En Hive, crear las siguientes tablas (internas) en la base de datos `tripdata` en hive
 
 * `payments(VendorID, tpep_pickup_datetetime, payment_type, total_amount)`
 
@@ -12,4 +12,29 @@ FIELDS TERMINATED BY ','
 location '/tables/external/tripsdb';
 ```
 
-![Creacion tabal Payments en Hive](imgs/image.png)
+![Creacion tabla 'payments' en Hive](imgs/image.png)
+
+* `passengers(tpep_pickup_datetetime, passenger_count, total_amount)`
+
+```
+CREATE TABLE passengers(tpep_pickup_datetetime date, passenger_count int, total_amount float)
+COMMENT "Table 'passengers' for bootcamp exercise 6"
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+location '/tables/external/tripsdb';
+```
+
+![Creacion tabla 'passengers' en Hive](imgs/image1.png)
+
+* `tolls (tpep_pickup_datetetime, passenger_count, tolls_amount, total_amount)`
+
+```
+CREATE TABLE tolls(tpep_pickup_datetetime date, passenger_count int, tolls_amount float, total_amount float)
+COMMENT "Table 'tolls' for bootcamp exercise 6"
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+location '/tables/external/tripsdb';
+```
+
+![Creacion tabla 'tolls' en Hive](imgs/image2.png)
+
