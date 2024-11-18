@@ -26,7 +26,7 @@ location '/tables/external/tripsdb';
 
 ![Creacion tabla 'passengers' en Hive](imgs/image1.png)
 
-* `tolls (tpep_pickup_datetetime, passenger_count, tolls_amount, total_amount)`
+* `tolls(tpep_pickup_datetetime, passenger_count, tolls_amount, total_amount)`
 
 ```
 CREATE TABLE tolls(tpep_pickup_datetetime date, passenger_count int, tolls_amount float, total_amount float)
@@ -37,4 +37,16 @@ location '/tables/external/tripsdb';
 ```
 
 ![Creacion tabla 'tolls' en Hive](imgs/image2.png)
+
+* `congestion(tpep_pickup_datetetime, passenger_count, congestion_surcharge, total_amount)`
+
+```
+CREATE TABLE congestion(tpep_pickup_datetetime date, passenger_count int, congestion_surcharge float, total_amount float)
+COMMENT "Table 'congestion' for bootcamp exercise 6"
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+location '/tables/external/tripsdb';
+```
+
+![Creacion tabla 'congestion' en Hive](imgs/image3.png)
 
