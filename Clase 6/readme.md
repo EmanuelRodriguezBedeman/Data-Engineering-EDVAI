@@ -50,3 +50,15 @@ location '/tables/external/tripsdb';
 
 ![Creacion tabla 'congestion' en Hive](imgs/image3.png)
 
+* `distance(tpep_pickup_datetetime, passenger_count, trip_distance, total_amount)`
+
+```
+CREATE TABLE distance(tpep_pickup_datetetime date, passenger_count int, trip_distance float, total_amount float)
+COMMENT "Table 'distance' for bootcamp exercise 6"
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+location '/tables/external/tripsdb';
+```
+
+![Creacion tabla 'distance' en Hive](imgs/image4.png)
+
