@@ -85,3 +85,24 @@ wget https://dataengineerpublic.blob.core.windows.net/data-engineer/yellow_tripd
 
 ## 5. Insertar en la tabla payments (VendorID, tpep_pickup_datetetime, payment_type, total_amount). Solamente los pagos con tarjeta de crédito.
 
+```
+df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
+df_payments = df.select(df.VendorID.cast('int'), df.tpep_pickup_datetime.cast('date'), df.payment_type.cast('string'), df.total_amount.cast('float'))
+df_payments.show(5)
+df_payments_filtered = df_payments.filter(df_payments.payment_type == 1)
+df_payments_filtered.show(5)
+df_payments_filtered.write.insertInto('tripdata.payments')
+```
+
+![Select & Insert tabla 'payments'](imgs/image7.png)
+
+## 6. Insertar en la tabla passengers (tpep_pickup_datetetime, passenger_count, total_amount) los registros cuya cantidad de pasajeros sea mayor a 2 y el total del viaje cueste más de 8 dólares.
+
+```
+df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
+df_passengers = df.select(df.tpep_pickup_datetetime.cast('date'), df.passenger_count.cast('int'), df.total_amount.cast('float'))
+df_passengers.show(5)
+df_passengers_filtered = df_passengers.filter((df_passengers.passenger_count > 2) & (df_passengers.total_amount > 8))
+df_passengers_filtered.show(5)
+df_passengers_filtered.write.insertInto('tripdata.passengers')
+```
