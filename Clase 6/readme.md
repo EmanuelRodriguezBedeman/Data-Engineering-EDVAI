@@ -8,11 +8,10 @@
 CREATE TABLE payments(VendorID int, tpep_pickup_datetetime date, payment_type STRING, total_amount float)
 COMMENT "Table 'payments' for bootcamp exercise 6"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-location '/tables/external/tripsdb';
+FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'payments' en Hive](imgs/image.png)
+![Creacion tabla Payments en Hive](imgs/image.png)
 
 * `passengers(tpep_pickup_datetetime, passenger_count, total_amount)`
 
@@ -20,11 +19,10 @@ location '/tables/external/tripsdb';
 CREATE TABLE passengers(tpep_pickup_datetetime date, passenger_count int, total_amount float)
 COMMENT "Table 'passengers' for bootcamp exercise 6"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-location '/tables/external/tripsdb';
+FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'passengers' en Hive](imgs/image1.png)
+![Creacion tabla passengers en Hive](imgs/image1.png)
 
 * `tolls(tpep_pickup_datetetime, passenger_count, tolls_amount, total_amount)`
 
@@ -32,8 +30,7 @@ location '/tables/external/tripsdb';
 CREATE TABLE tolls(tpep_pickup_datetetime date, passenger_count int, tolls_amount float, total_amount float)
 COMMENT "Table 'tolls' for bootcamp exercise 6"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-location '/tables/external/tripsdb';
+FIELDS TERMINATED BY ',';
 ```
 
 ![Creacion tabla 'tolls' en Hive](imgs/image2.png)
@@ -44,8 +41,7 @@ location '/tables/external/tripsdb';
 CREATE TABLE congestion(tpep_pickup_datetetime date, passenger_count int, congestion_surcharge float, total_amount float)
 COMMENT "Table 'congestion' for bootcamp exercise 6"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-location '/tables/external/tripsdb';
+FIELDS TERMINATED BY ',';
 ```
 
 ![Creacion tabla 'congestion' en Hive](imgs/image3.png)
@@ -56,12 +52,10 @@ location '/tables/external/tripsdb';
 CREATE TABLE distance(tpep_pickup_datetetime date, passenger_count int, trip_distance float, total_amount float)
 COMMENT "Table 'distance' for bootcamp exercise 6"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
-location '/tables/external/tripsdb';
+FIELDS TERMINATED BY ',';
 ```
 
 ![Creacion tabla 'distance' en Hive](imgs/image4.png)
-
 
 ## 2. En Hive, hacer un ‘describe’ de las tablas passengers y distance
 
@@ -80,3 +74,14 @@ DESCRIBE distance;
 ```
 
 ![Descripcion tabla 'distance'](imgs/image6.png)
+
+## 3. Hacer ingest del file: *yellow_tripdata_2021-01.csv*
+
+HDFS
+
+```
+wget https://dataengineerpublic.blob.core.windows.net/data-engineer/yellow_tripdata_2021-01.csv
+```
+
+## 5. Insertar en la tabla payments (VendorID, tpep_pickup_datetetime, payment_type, total_amount). Solamente los pagos con tarjeta de crédito.
+
