@@ -96,6 +96,8 @@ df_payments_filtered.write.insertInto('tripdata.payments')
 
 ![Select & Insert tabla 'payments'](image-7.png)
 
+![Print tabla 'payments' en Hive](image-8.png)
+
 ## 6. Insertar en la tabla passengers (tpep_pickup_datetime, passenger_count, total_amount) los registros cuya cantidad de pasajeros sea mayor a 2 y el total del viaje cueste más de 8 dólares.
 
 ```
@@ -107,4 +109,21 @@ df_passengers_filtered.show(5)
 df_passengers_filtered.write.insertInto('tripdata.passengers')
 ```
 
-![Select & Insert tabla 'passengers'](image-8.png)
+![Select & Insert tabla 'passengers'](image-9.png)
+
+![Print tabla 'passengers' en Hive](image-10.png)
+
+## 7. Insertar en la tabla tolls (tpep_pickup_datetime, passenger_count, tolls_amount, total_amount) los registros que tengan pago de peajes mayores a 0.1 y cantidad de pasajeros mayores a 1.
+
+```
+df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
+df_tolls = df.select(df.tpep_pickup_datetime.cast('date'), df.passenger_count.cast('int'), df.tolls_amount.cast('float'), df.total_amount.cast('float'))
+df_tolls.show(5)
+df_tolls_filtered = df_tolls.filter((df_tolls.passenger_count > 1) & (df_tolls.tolls_amount > 0.1))
+df_tolls_filtered.show(5)
+df_tolls_filtered.write.insertInto('tripdata.passengers')
+```
+
+![Select & Insert tabla 'tolls'](image-11.png)
+
+![Print tabla 'tolls' en Hive](image-12.png)
