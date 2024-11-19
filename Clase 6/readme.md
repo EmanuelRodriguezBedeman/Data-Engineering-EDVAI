@@ -107,3 +107,4 @@ df_passengers_filtered.show(5)
 df_passengers_filtered.write.insertInto('tripdata.passengers')
 ```
 
+![Select & Insert tabla 'passengers'](image-8.png)
