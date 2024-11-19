@@ -57,6 +57,8 @@ FIELDS TERMINATED BY ',';
 
 ![Creacion tabla 'distance' en Hive](image-4.png)
 
+---
+
 ## 2. En Hive, hacer un ‘describe’ de las tablas passengers y distance
 
 * Tabla 'passengers'
@@ -75,6 +77,8 @@ DESCRIBE distance;
 
 ![Describe tabla 'distance'](image-6.png)
 
+---
+
 ## 3. Hacer ingest del file: *yellow_tripdata_2021-01.csv*
 
 HDFS
@@ -82,6 +86,8 @@ HDFS
 ```
 wget https://dataengineerpublic.blob.core.windows.net/data-engineer/yellow_tripdata_2021-01.csv
 ```
+
+---
 
 ## 5. Insertar en la tabla payments (VendorID, tpep_pickup_datetime, payment_type, total_amount). Solamente los pagos con tarjeta de crédito.
 
@@ -98,6 +104,8 @@ df_payments_filtered.write.insertInto('tripdata.payments')
 
 ![Print tabla 'payments' en Hive](image-8.png)
 
+---
+
 ## 6. Insertar en la tabla passengers (tpep_pickup_datetime, passenger_count, total_amount) los registros cuya cantidad de pasajeros sea mayor a 2 y el total del viaje cueste más de 8 dólares.
 
 ```
@@ -113,6 +121,8 @@ df_passengers_filtered.write.insertInto('tripdata.passengers')
 
 ![Print tabla 'passengers' en Hive](image-10.png)
 
+---
+
 ## 7. Insertar en la tabla tolls (tpep_pickup_datetime, passenger_count, tolls_amount, total_amount) los registros que tengan pago de peajes mayores a 0.1 y cantidad de pasajeros mayores a 1.
 
 ```
@@ -121,9 +131,28 @@ df_tolls = df.select(df.tpep_pickup_datetime.cast('date'), df.passenger_count.ca
 df_tolls.show(5)
 df_tolls_filtered = df_tolls.filter((df_tolls.passenger_count > 1) & (df_tolls.tolls_amount > 0.1))
 df_tolls_filtered.show(5)
-df_tolls_filtered.write.insertInto('tripdata.passengers')
+df_tolls_filtered.write.insertInto('tripdata.tolls')
 ```
 
 ![Select & Insert tabla 'tolls'](image-11.png)
 
 ![Print tabla 'tolls' en Hive](image-12.png)
+
+---
+
+## 8. Insertar en la tabla congestion (tpep_pickup_datetime, passenger_count congestion_surcharge, total_amount) los registros que hayan tenido congestión en los viajes en la fecha 2021-01-18
+
+```
+df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
+df_congestion = df.select(df.tpep_pickup_datetime.cast('date'), df.passenger_count.cast('int'), df.congestion_surcharge.cast('float'), df.total_amount.cast('float'))
+df_congestion.show(5)
+df_congestion_filtered = df_congestion.filter(df_congestion.tpep_pickup_datetime == 2021-01-18)
+df_congestion_filtered.show(5)
+df_congestion_filtered.write.insertInto('tripdata.congestion')
+```
+
+![Select & Insert tabla 'congestion'](image-13.png)
+
+![Print tabla 'congestion' en Hive](image-14.png)
+
+---
