@@ -146,7 +146,7 @@ df_tolls_filtered.write.insertInto('tripdata.tolls')
 df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
 df_congestion = df.select(df.tpep_pickup_datetime.cast('date'), df.passenger_count.cast('int'), df.congestion_surcharge.cast('float'), df.total_amount.cast('float'))
 df_congestion.show(5)
-df_congestion_filtered = df_congestion.filter(df_congestion.tpep_pickup_datetime == 2021-01-18)
+df_congestion_filtered = df_congestion.filter(df_congestion.tpep_pickup_datetime == '2021-01-18')
 df_congestion_filtered.show(5)
 df_congestion_filtered.write.insertInto('tripdata.congestion')
 ```
@@ -156,3 +156,18 @@ df_congestion_filtered.write.insertInto('tripdata.congestion')
 ![Print tabla 'congestion' en Hive](image-14.png)
 
 ---
+
+## 9. Insertar en la tabla distance (tpep_pickup_datetime, passenger_count, trip_distance, total_amount) los registros de la fecha 2020-12-31 que hayan tenido solamente un pasajero (passenger_count = 1) y hayan recorrido más de 15 millas (trip_distance).
+
+```
+df = spark.read.option('header', 'true').csv('/ingest/yellow_tripdata_2021-01.csv')
+df_distance = df.select(df.tpep_pickup_datetime.cast('date'), df.passenger_count.cast('int'), df.trip_distance.cast('float'), df.total_amount.cast('float'))
+df_distance.show(5)
+df_distance_filtered = df_distance.filter((df_distance.tpep_pickup_datetime == '2020-12-31') & (df_distance.passenger_count == 1) & (df_distance.trip_distance > 15))
+df_distance_filtered.show(5)
+df_distance_filtered.write.insertInto('tripdata.distance')
+```
+
+![Select & Insert tabla 'distance'](image-15.png)
+
+![Print tabla 'distance' en Hive](image-16.png)
