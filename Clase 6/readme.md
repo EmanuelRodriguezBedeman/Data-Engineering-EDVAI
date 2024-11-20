@@ -11,7 +11,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'payments' en Hive](image.png)
+![Creacion tabla 'payments' en Hive](imgs/image.png)
 
 * `passengers(tpep_pickup_datetime, passenger_count, total_amount)`
 
@@ -22,7 +22,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'passengers' en Hive](image-1.png)
+![Creacion tabla 'passengers' en Hive](imgs/image-1.png)
 
 * `tolls(tpep_pickup_datetime, passenger_count, tolls_amount, total_amount)`
 
@@ -33,7 +33,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'tolls' en Hive](image-2.png)
+![Creacion tabla 'tolls' en Hive](imgs/image-2.png)
 
 * `congestion(tpep_pickup_datetime, passenger_count, congestion_surcharge, total_amount)`
 
@@ -44,7 +44,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'congestion' en Hive](image-3.png)
+![Creacion tabla 'congestion' en Hive](imgs/image-3.png)
 
 * `distance(tpep_pickup_datetime, passenger_count, trip_distance, total_amount)`
 
@@ -55,7 +55,7 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ',';
 ```
 
-![Creacion tabla 'distance' en Hive](image-4.png)
+![Creacion tabla 'distance' en Hive](imgs/image-4.png)
 
 ---
 
@@ -67,7 +67,7 @@ FIELDS TERMINATED BY ',';
 DESCRIBE passengers;
 ```
 
-![Describe tabla 'passengers'](image-5.png)
+![Describe tabla 'passengers'](imgs/image-5.png)
 
 * Tabla 'distance'
 
@@ -75,7 +75,7 @@ DESCRIBE passengers;
 DESCRIBE distance;
 ```
 
-![Describe tabla 'distance'](image-6.png)
+![Describe tabla 'distance'](imgs/image-6.png)
 
 ---
 
@@ -100,9 +100,9 @@ df_payments_filtered.show(5)
 df_payments_filtered.write.insertInto('tripdata.payments')
 ```
 
-![Select & Insert tabla 'payments'](image-7.png)
+![Select & Insert tabla 'payments'](imgs/image-7.png)
 
-![Print tabla 'payments' en Hive](image-8.png)
+![Print tabla 'payments' en Hive](imgs/image-8.png)
 
 ---
 
@@ -117,9 +117,9 @@ df_passengers_filtered.show(5)
 df_passengers_filtered.write.insertInto('tripdata.passengers')
 ```
 
-![Select & Insert tabla 'passengers'](image-9.png)
+![Select & Insert tabla 'passengers'](imgs/image-9.png)
 
-![Print tabla 'passengers' en Hive](image-10.png)
+![Print tabla 'passengers' en Hive](imgs/image-10.png)
 
 ---
 
@@ -134,9 +134,9 @@ df_tolls_filtered.show(5)
 df_tolls_filtered.write.insertInto('tripdata.tolls')
 ```
 
-![Select & Insert tabla 'tolls'](image-11.png)
+![Select & Insert tabla 'tolls'](imgs/image-11.png)
 
-![Print tabla 'tolls' en Hive](image-12.png)
+![Print tabla 'tolls' en Hive](imgs/image-12.png)
 
 ---
 
@@ -151,9 +151,9 @@ df_congestion_filtered.show(5)
 df_congestion_filtered.write.insertInto('tripdata.congestion')
 ```
 
-![Select & Insert tabla 'congestion'](image-13.png)
+![Select & Insert tabla 'congestion'](imgs/image-13.png)
 
-![Print tabla 'congestion' en Hive](image-14.png)
+![Print tabla 'congestion' en Hive](imgs/image-14.png)
 
 ---
 
@@ -168,6 +168,6 @@ df_distance_filtered.show(5)
 df_distance_filtered.write.insertInto('tripdata.distance')
 ```
 
-![Select & Insert tabla 'distance'](image-15.png)
+![Select & Insert tabla 'distance'](imgs/image-15.png)
 
-![Print tabla 'distance' en Hive](image-16.png)
+![Print tabla 'distance' en Hive](imgs/image-16.png)
