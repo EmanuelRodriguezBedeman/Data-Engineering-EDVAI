@@ -10,4 +10,6 @@ location '/tables/external/airport_trips';
 
 ![Creacion de tabla 'airpost_trips'](image.png)
 
-2. 
+2. En Hive, mostrar el esquema de `airport_trips`
+
+![Esquema tabla 'airports_trips'](image-1.png)
