@@ -43,3 +43,44 @@ rm /home/hadoop/landing/yellow_tripdata_2021-02.parquet
 ![Creacion archivo .bash](image-2.png)
 
 ![Contenido archivo .bash](image-3.png)
+
+**4.** Crear un archivo `.py` que permita, mediante Spark, crear un data frame uniendo los viajes del mes 01 y mes 02 del año 2021 y luego Insertar en la tabla `airport_trips` los viajes que tuvieron como inicio o destino aeropuertos, que hayan pagado con dinero.
+
+**Archivo `airport_transformation.py`:**
+
+```python
+# Import librerias y creacion de sesion en Spark
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import month, year
+
+spark = SparkSession.builder \
+    .appName("Airport Trips") \
+    .enableHiveSupport() \
+    .getOrCreate()
+
+# Carga de datos
+df = spark.read.option('header', 'true').parquet(
+    'hdfs://172.17.0.2:9000/ingest/yellow_tripdata_2021-01.parquet', 
+    'hdfs://172.17.0.2:9000/ingest/yellow_tripdata_2021-02.parquet'
+)
+
+# Filtro por columnas, fecha entre enero y febrero del 2021, el tipo de pago = efectivo y origen o destino = aeropuerto
+columnas = ["tpep_pickup_datetime", "airport_fee", "payment_type", "tolls_amount", "total_amount"]
+
+df_airport = df.select(*columnas).filter(
+    (month(df["tpep_pickup_datetime"]).isin([1, 2])) & 
+    (year(df["tpep_pickup_datetime"]) == 2021) & 
+    (df["payment_type"] == 2 ) &
+    (df["airport_fee"] > 0)
+)
+
+# Inserta los datos en Hive
+df_airport.write.insertInto("tripdata.airport_trips", overwrite=False)
+```
+
+![Creacion .py](image-4.png)
+
+![Contenido .py](image-5.png)
+
+**5.** Realizar un proceso automático en Airflow que orqueste los archivos creados en los puntos 3 y 4. Correrlo y mostrar una captura de pantalla (del DAG y del resultado en la base de datos).
+
