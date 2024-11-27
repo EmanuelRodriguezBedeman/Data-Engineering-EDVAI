@@ -8,13 +8,13 @@ FIELDS TERMINATED BY ','
 location '/tables/external/airport_trips';
 ```
 
-![Creacion de tabla 'airpost_trips'](/image.png)
+![Creacion de tabla 'airpost_trips'](imgs/image.png)
 
 **2.** En Hive, mostrar el esquema de `airport_trips`
 
 `DESCRIBE airport_trips`
 
-![Esquema tabla 'airports_trips'](/image-1.png)
+![Esquema tabla 'airports_trips'](imgs/image-1.png)
 
 **3.** Crear un archivo `.bash` que permita descargar los archivos mencionados abajo e ingestarlos en HDFS:
 
@@ -40,9 +40,9 @@ rm /home/hadoop/landing/yellow_tripdata_2021-01.parquet
 rm /home/hadoop/landing/yellow_tripdata_2021-02.parquet
 ```
 
-![Creacion archivo .bash](/image-2.png)
+![Creacion archivo .bash](imgs/image-2.png)
 
-![Contenido archivo .bash](/image-3.png)
+![Contenido archivo .bash](imgs/image-3.png)
 
 **4.** Crear un archivo `.py` que permita, mediante Spark, crear un data frame uniendo los viajes del mes 01 y mes 02 del año 2021 y luego Insertar en la tabla `airport_trips` los viajes que tuvieron como inicio o destino aeropuertos, que hayan pagado con dinero.
 
@@ -78,12 +78,12 @@ df_airport = df.select(*columnas).filter(
 df_airport.write.insertInto("tripdata.airport_trips", overwrite=False)
 ```
 
-![Creacion .py](/image-4.png)
+![Creacion .py](imgs/image-4.png)
 
-![Contenido .py](/image-5.png)
+![Contenido .py](imgs/image-5.png)
 
 **5.** Realizar un proceso automático en Airflow que orqueste los archivos creados en los puntos 3 y 4. Correrlo y mostrar una captura de pantalla (del DAG y del resultado en la base de datos).
 
-![DAG Corriendo](/image-6.png)
+![DAG Corriendo](imgs/image-6.png)
 
-![Resultado BD](/image-7.png)
+![Resultado BD](imgs/image-7.png)
