@@ -21,7 +21,7 @@ location '/tables/external/airport_trips';
 - Yellow_tripdata_2021-01.parquet (https://dataengineerpublic.blob.core.windows.net/data-engineer/yellow_tripdata_2021-01.parquet)
 - Yellow_tripdata_2021-02.parquet (https://dataengineerpublic.blob.core.windows.net/data-engineer/yellow_tripdata_2021-02.parquet)
 
-Archivo `.bash`:
+**Archivo `airport_ingest.py`:**
 
 ```
 # Indica que interprete debe usar el script
@@ -84,3 +84,4 @@ df_airport.write.insertInto("tripdata.airport_trips", overwrite=False)
 
 **5.** Realizar un proceso automático en Airflow que orqueste los archivos creados en los puntos 3 y 4. Correrlo y mostrar una captura de pantalla (del DAG y del resultado en la base de datos).
 
+![DAG Corriendo](image-6.png)
