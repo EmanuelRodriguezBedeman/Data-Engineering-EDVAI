@@ -48,6 +48,8 @@ https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/constructors.c
 - `races.csv`
 https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/races.csv
 
+**Archivo `f1_ingeset.bash`:**
+
 ```bash
 #!/bin/bash
 
@@ -75,3 +77,7 @@ done
 # Mensaje de fin
 echo "\n****** End Ingest F1 ******"
 ```
+
+![Nano f1_ingest.bash](image-4.png)
+
+![Archivo f1_ingest.bash en nano](image-5.png)
