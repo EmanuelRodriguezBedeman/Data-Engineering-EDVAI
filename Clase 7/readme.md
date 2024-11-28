@@ -25,7 +25,7 @@ location '/tables/external/airport_trips';
 
 **Archivo `airport_ingest.py`:**
 
-```
+```bash
 # Indica que interprete debe usar el script
 #!/bin/bash
 
