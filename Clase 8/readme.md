@@ -12,7 +12,7 @@ FIELDS TERMINATED BY ','
 location '/tables/external/driver_results';
 ```
 
-![Creacion tabla 'driver_results'](image.png)
+![Creacion tabla 'driver_results'](imgs/image.png)
 
 ```bash
 CREATE EXTERNAL TABLE constructor_results(constructorRef STRING, cons_name STRING, cons_nationality STRING, url STRING, points INT)
