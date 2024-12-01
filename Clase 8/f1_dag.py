@@ -9,7 +9,7 @@ args = {
 }
 
 with DAG(
-    dag_id='f1-DAG',
+    dag_id='F1',
     default_args=args,
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),
@@ -25,7 +25,7 @@ with DAG(
 
     ingest = BashOperator(
         task_id='ingest',
-        bash_command='sshpass -p "edvai" ssh hadoop@172.18.0.8 /usr/bin/sh /home/hadoop/scripts/f1_ingest.bash ',
+        bash_command='/usr/bin/sh /home/hadoop/scripts/f1_ingest.sh ',
     )
 
 

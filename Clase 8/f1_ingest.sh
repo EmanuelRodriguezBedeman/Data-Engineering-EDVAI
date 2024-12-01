@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Mensaje de inicio
 echo "****** Started Ingest F1 ******"
@@ -7,10 +7,10 @@ echo "****** Started Ingest F1 ******"
 LANDING_DIR="/home/hadoop/landing"
 
 # Array con nombre de archivos
-ARCHIVOS=("results.csv" "drivers.csv" "constructors.csv" "races.csv")
+ARCHIVOS="results.csv drivers.csv constructors.csv races.csv"
 
 # Loop para realizar ingesta
-for ARCHIVO in "${ARCHIVOS[@]}"; do
+for ARCHIVO in $ARCHIVOS; do
     wget -P $LANDING_DIR https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/$ARCHIVO
 
     hdfs dfs -put $LANDING_DIR/$ARCHIVO /ingest

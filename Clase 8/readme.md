@@ -34,7 +34,7 @@ Esquema `constructor_results`:
 
 ![Esquema tabla 'constructor_results'](image-3.png)
 
-### **3.** Crear un archivo .bash que permita descargar los archivos mencionados abajo e ingestarlos en HDFS:
+### **3.** Crear un archivo .sh que permita descargar los archivos mencionados abajo e ingestarlos en HDFS:
 
 - `results.csv`
 https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/results.csv
@@ -48,7 +48,7 @@ https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/constructors.c
 - `races.csv`
 https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/races.csv
 
-**Archivo `f1_ingeset.bash`:**
+**Archivo `f1_ingeset.sh`:**
 
 ```bash
 #!/bin/bash
