@@ -31,7 +31,7 @@ with DAG(
 
     transform = BashOperator(
         task_id='transform',
-        bash_command='sshpass -p "edvai" ssh hadoop@172.18.0.8 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/f1_transformation.py ',
+        bash_command='ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/f1_transformation.py ',
     )
 
 

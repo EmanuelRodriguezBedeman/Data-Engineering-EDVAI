@@ -22,17 +22,17 @@ FIELDS TERMINATED BY ','
 location '/tables/external/constructor_results';
 ```
 
-![Creacion tabla 'constructor_results'](image-1.png)
+![Creacion tabla 'constructor_results'](imgs/image-1.png)
 
 ### **2.** En Hive, mostrar el esquema de `driver_results` y `constructor_results`
 
 Esquema `driver_results`:
 
-![Esquema tabla driver_results](image-2.png)
+![Esquema tabla driver_results](imgs/image-2.png)
 
 Esquema `constructor_results`:
 
-![Esquema tabla 'constructor_results'](image-3.png)
+![Esquema tabla 'constructor_results'](imgs/image-3.png)
 
 ### **3.** Crear un archivo .sh que permita descargar los archivos mencionados abajo e ingestarlos en HDFS:
 
@@ -78,9 +78,9 @@ done
 echo "\n****** End Ingest F1 ******"
 ```
 
-![Nano f1_ingest.bash](image-4.png)
+![Nano f1_ingest.bash](imgs/image-4.png)
 
-![Archivo f1_ingest.bash en nano](image-5.png)
+![Archivo f1_ingest.bash en nano](imgs/image-5.png)
 
 ### **4.** Generar un archivo .py que permita, mediante Spark:
     a. insertar en la tabla driver_results los corredores con mayor cantidad de puntos en la historia.
@@ -163,7 +163,7 @@ args = {
 }
 
 with DAG(
-    dag_id='f1-DAG',
+    dag_id='F1',
     default_args=args,
     schedule_interval='0 0 * * *',
     start_date=days_ago(2),
@@ -179,17 +179,24 @@ with DAG(
 
     ingest = BashOperator(
         task_id='ingest',
-        bash_command='sshpass -p "edvai" ssh hadoop@172.18.0.8 /usr/bin/sh /home/hadoop/scripts/f1_ingest.bash ',
+        bash_command='/usr/bin/sh /home/hadoop/scripts/f1_ingest.sh ',
     )
 
 
     transform = BashOperator(
         task_id='transform',
-        bash_command='sshpass -p "edvai" ssh hadoop@172.18.0.8 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/f1_transformation.py ',
+        bash_command='ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/f1_transformation.py ',
     )
+
 
     ingest >> transform >>finaliza_proceso
 
 if __name__ == "__main__":
     dag.cli()
 ```
+
+![DAG Ejecutado](imgs/image-6.png)
+
+![Resultado en HIVE de driver_results](imgs/image-7.png)
+
+![Resultado en HIVE de constructor_results](imgs/image-8.png)
