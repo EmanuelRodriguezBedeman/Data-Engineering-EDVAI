@@ -1,0 +1,2 @@
+bucket 1: demo-bucket-edvai-10
+bucket 2: demo-bucket-edvai-10
