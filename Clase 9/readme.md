@@ -39,7 +39,7 @@ sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres\
     --password-file file:///home/hadoop/scripts/sqoop.pass \
-    --query "SELECT od.order_id, od.unit_price, od.quantity, od.discount FROM order_details od AND \$CONDITIONS" \
+    --query "SELECT od.order_id, od.unit_price, od.quantity, od.discount FROM order_details od WHERE \$CONDITIONS" \
     --m 1 \
     --target-dir /sqoop/ingest/order_details \
     --as-parquetfile \
@@ -50,7 +50,7 @@ sqoop import \
 
 
 
-6. Generar un archivo .py que permita mediante Spark insertar en hive en la tabla products_sent, los datos del punto 3 y 4, de manera tal que se vean las columnas order_id, shipped_date, company_name, phone, unit_price_discount (unit_price with discount), quantity, total_price unit_price_discount * quantity). Solo de aquellos pedidos que hayan tenido descuento.
+6. Generar un archivo .py que permita mediante Spark insertar en hive en la tabla products_sent, los datos del punto 3 y 4, de manera tal que se vean las columnas (order_id, shipped_date, company_name, phone, unit_price_discount (unit_price with discount), quantity, total_price unit_price_discount * quantity). Solo de aquellos pedidos que hayan tenido descuento.
 
 
 
