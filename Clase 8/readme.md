@@ -48,12 +48,9 @@ https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/constructors.c
 - `races.csv`
 https://dataengineerpublic.blob.core.windows.net/data-engineer/f1/races.csv
 
-**Archivo `f1_ingeset.sh`:**
+**Archivo `f1_ingest.sh`:**
 
 ```bash
-#!/bin/bash
-
-# Mensaje de inicio
 #!/bin/bash
 
 # Mensaje de inicio
