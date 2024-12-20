@@ -27,6 +27,14 @@ https://dataengineerpublic.blob.core.windows.net/data-engineer/202206-informe-mi
 Aeropuertos_detalles:
 https://dataengineerpublic.blob.core.windows.net/data-engineer/aeropuertos_detalle.csv
 
+```
+nano aviacion_ingest.sh
+```
+
+![creacion aviacion_ingest.sh](image-2.png)
+
+![Creacion en nano de aviacion_ingest.sh](image-3.png)
+
 **Archivo** `aviacion_ingest.sh`:
 
 ```bash
@@ -54,15 +62,23 @@ done
 echo "\n****** Fin Ingesta Aviacion Civil ******"
 ```
 
+Genera permisos de lectura y de ejecución para el archivo `aviacion_ingest.sh`:
+
+```
+chmod 555 aviacion_ingest.sh
+```
+
+![Permisos aviacion_ingest.sh](image-4.png)
+
 2. Crear 2 tablas en el datawarehouse, una para los vuelos realizados en 2021 y 2022 (2021-informe-ministerio.csv y 202206-informe-ministerio) y otra tabla para el detalle de los aeropuertos (aeropuertos_detalle.csv).
 
-Crea base de datos `aviacion`:
+Creacion base de datos `aviacion`:
 
 ```bash
 CREATE DATABASE aviacion;
 ```
 
-Crea tabla `aeropuerto_tabla`:
+Creacion tabla `aeropuerto_tabla`:
 
 ```bash
 CREATE EXTERNAL TABLE aeropuerto_tabla(
@@ -83,6 +99,8 @@ FIELDS TERMINATED BY ','
 location '/tables/external/aeropuerto_tabla';
 ```
 
+![creacion tabla aeropuerto_tabla](image.png)
+
 Crea tabla `aeropuerto_detalles_tabla`:
 
 ```bash
@@ -98,7 +116,7 @@ CREATE EXTERNAL TABLE aeropuerto_detalles_tabla(
     elev FLOAT,
     uom_elev STRING,
     ref STRING,
-    distancia_ref float,
+    distancia_ref FLOAT,
     direccion_ref STRING,
     condicion STRING,
     control STRING,
@@ -114,6 +132,8 @@ ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 location '/tables/external/aeropuerto_detalles_tabla';
 ```
+
+![creacion tabla aeropuerto_detalles_tabla](image-1.png)
 
 3. Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos columnas creadas.
 
