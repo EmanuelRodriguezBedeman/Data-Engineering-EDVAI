@@ -180,7 +180,7 @@ if __name__ == "__main__":
 ```python
 # Import librerias y creacion de sesion en Spark
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import year, sum
+from pyspark.sql import functions as F
 
 spark = SparkSession.builder \
     .appName("Aviacion") \
@@ -190,19 +190,39 @@ spark = SparkSession.builder \
 # Carga de datos
 vuelos_2021 = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/2021-informe-ministerio.csv')
 vuelos_2022 = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/202206-informe-ministerio.csv')
-detalle_aeropuertos = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/aeropuertos_detalle.csv')
+aeropuertos = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/aeropuertos_detalle.csv')
 
-# Elimina columna 'calidad del dato' y reemplaza nulos de la columna 'pasajeros' por ceros en vuelos 2021
-vuelos_2021_domesticos_filtered = vuelos_2021.drop('calidad del dato') \
-    .filter(vuelos_2021['Clasificación Vuelo'] == "Domestico") \
+# Union vuelos 2021 y 2022
+vuelos = vuelos_2021.union(vuelos_2022)
+
+# Tabla vuelos
+# Casting de las columnas "Fecha" y "Pasajeros"
+vuelos_mod = vuelos \
+    .withColumn("Pasajeros", F.col("Pasajeros").cast("int")) \
+    .withColumn("Fecha", F.to_date(vuelos["Fecha"], "dd/MM/yyyy").alias("Fecha"))
+
+# Tabla vuelos
+# Filtra por vuelos domesticos, elimina columna 'calidad del dato' y reemplaza nulos de la columna 'pasajeros' por ceros
+vuelos_mod_domesticos_filtered = vuelos_mod \
+    .filter(vuelos_mod['Clasificación Vuelo'] == "Domestico") \
+    .drop('Calidad dato') \
     .fillna(0, 'pasajeros')
 
-# Elimina columna 'calidad del dato' y reemplaza nulos de la columna 'pasajeros' por ceros en vuelos 2022
-vuelos_2022_domesticos_filtered = vuelos_2022.drop('calidad del dato') \
-    .filter(vuelos_2022['Clasificación Vuelo'] == "Domestico") \
-    .fillna(0, 'pasajeros')
+# Tabla aeropuertos_detalle
+# Casting de variables elev y distancia_ref
+aeropuertos_mod = aeropuertos \
+    .withColumn("elev", aeropuertos["elev"].cast("float")) \
+    .withColumn("distancia_ref", aeropuertos["distancia_ref"].cast("float"))
 
+# Tabla aeropuertos_detalle
 # Elimina columnas 'inhab', 'fir' y reemplaza nulos de la columna 'distancia_ref' por ceros. 
-detalle_aeropuertos_transformado = detalle_aeropuertos.drop('inhab', 'fir')\
-    .fillna(0, "distancia_ref")
+aeropuertos_transformado = aeropuertos_mod \
+    .fillna(0, "distancia_ref") \
+    .drop('inhab', 'fir')
+
+# Inserta tabla "vuelos_mod_domesticos_filtered" en la BD aviacion, en la tabla 'aeropuerto_tabla'
+vuelos_mod_domesticos_filtered.write.insertInto("aviacion.aeropuerto_tabla")
+
+# Inserta tabla "detalle_aeropuertos" en la BD aviacion, en la tabla 'aeropuerto_detalles_tabla'
+aeropuertos_transformado.write.insertInto("aviacion.aeropuerto_detalles_tabla")
 ```
