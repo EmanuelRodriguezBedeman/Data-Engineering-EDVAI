@@ -60,7 +60,7 @@ echo "****** Started Ingest F1 ******"
 LANDING_DIR="/home/hadoop/landing"
 
 # Array con nombre de archivos
-ARCHIVOS=("results.csv" "drivers.csv" "constructors.csv" "races.csv")
+ARCHIVOS="results.csv" "drivers.csv" "constructors.csv" "races.csv"
 
 # Loop para realizar ingesta
 for ARCHIVO in "${ARCHIVOS[@]}"; do

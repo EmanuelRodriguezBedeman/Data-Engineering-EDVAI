@@ -43,22 +43,33 @@ nano aviacion_ingest.sh
 # Mensaje de inicio
 echo "****** Inicio Ingesta Aviacion Civil ******"
 
-# Variable directorio landing
+# Directorio landing en hadoop
 LANDING_DIR="/home/hadoop/landing"
 
-# Array con nombre de archivos
-ARCHIVOS=("2021-informe-ministerio.csv" "202206-informe-ministerio.csv" "aeropuertos_detalle.csv")
+# Directorio destino en HDFS
+DEST_DIR="/ingest"
 
-# Loop para realizar ingesta
-for ARCHIVO in "${ARCHIVOS[@]}"; do
-    wget -P $LANDING_DIR https://dataengineerpublic.blob.core.windows.net/data-engineer/$ARCHIVO
+# Nombre archivos
+VUELOS_2021="2021-informe-ministerio.csv"
+VUELOS_2022="202206-informe-ministerio.csv"
+AEROPUERTOS="aeropuertos_detalle.csv"
 
-    hdfs dfs -put $LANDING_DIR/$ARCHIVO /ingest
+# Descarga archivos
+wget -P $LANDING_DIR https://dataengineerpublic.blob.core.windows.net/data-engineer/$VUELOS_2021
+wget -P $LANDING_DIR https://dataengineerpublic.blob.core.windows.net/data-engineer/$VUELOS_2022
+wget -P $LANDING_DIR https://dataengineerpublic.blob.core.windows.net/data-engineer/$AEROPUERTOS
 
-    rm $LANDING_DIR/$ARCHIVO
-done
+# Mover archivos a HDFS
+hdfs dfs -put $LANDING_DIR/$VUELOS_2021 $DEST_DIR
+hdfs dfs -put $LANDING_DIR/$VUELOS_2022 $DEST_DIR
+hdfs dfs -put $LANDING_DIR/$AEROPUERTOS $DEST_DIR
 
-# Mensaje de fin
+# Remueve archivos
+rm $LANDING_DIR/$VUELOS_2021
+rm $LANDING_DIR/$VUELOS_2022
+rm $LANDING_DIR/$AEROPUERTOS
+
+# Mensaje de finalizacion
 echo "\n****** Fin Ingesta Aviacion Civil ******"
 ```
 
@@ -135,7 +146,7 @@ location '/tables/external/aeropuerto_detalles_tabla';
 
 ![creacion tabla aeropuerto_detalles_tabla](image-1.png)
 
-3. Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos columnas creadas.
+3. Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos tablas creadas.
 
 Los archivos `202206-informe-ministerio.csv` y `202206-informe-ministerio.csv` → en la tabla `aeropuerto_tabla`.
 
@@ -189,6 +200,8 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
+![Pipeline aviacion](image-7.png)
+
 4. Realizar las siguiente transformaciones en los pipelines de datos:
 * Eliminar la columna inhab ya que no se utilizará para el análisis
 * Eliminar la columna fir ya que no se utilizará para el análisis
@@ -196,6 +209,10 @@ if __name__ == "__main__":
 * Filtrar los vuelos internacionales ya que solamente se analizarán los vuelos domésticos
 * En el campo pasajeros si se encuentran campos en Null convertirlos en 0 (cero)
 * En el campo distancia_ref si se encuentran campos en Null convertirlos en 0 (cero)
+
+Creacion de archivo `aviacion_transformacion.py`:
+
+![Creacion de aviacion_transformacion.py](image-5.png)
 
 ```python
 # Import librerias y creacion de sesion en Spark
@@ -217,9 +234,11 @@ vuelos = vuelos_2021.union(vuelos_2022)
 
 # Tabla vuelos
 # Casting de las columnas "Fecha" y "Pasajeros"
+# Unifica los valores de columna "Clasificacion Vuelo" a "Domestico"
 vuelos_mod = vuelos \
     .withColumn("Pasajeros", F.col("Pasajeros").cast("int")) \
-    .withColumn("Fecha", F.to_date(vuelos["Fecha"], "dd/MM/yyyy").alias("Fecha"))
+    .withColumn("Fecha", F.to_date(vuelos["Fecha"], "dd/MM/yyyy").alias("Fecha")) \
+    .replace({'Doméstico': 'Domestico'}, subset=['Clasificación Vuelo'])
 
 # Tabla vuelos
 # Filtra por vuelos domesticos, elimina columna 'calidad del dato' y reemplaza nulos de la columna 'pasajeros' por ceros
@@ -246,3 +265,26 @@ vuelos_mod_domesticos_filtered.write.insertInto("aviacion.aeropuerto_tabla")
 # Inserta tabla "detalle_aeropuertos" en la BD aviacion, en la tabla 'aeropuerto_detalles_tabla'
 aeropuertos_transformado.write.insertInto("aviacion.aeropuerto_detalles_tabla")
 ```
+
+![Permisos aviacion_transformacion.py](image-6.png)
+
+5. Mostrar mediante una impresión de pantalla, que los tipos de campos de las tablas sean los solicitados en el datawarehouse (ej: fecha date, aeronave string, pasajeros integer, etc.)
+
+Esquema tabla `aeropuerto_tabla`:
+
+![Esquema tabla aeropuerto_tabla](image-8.png)
+
+Esquema tabla `aeropuerto_detalles_tabla`:
+
+![ESquema tabla aeropuerto_detalles_tabla](image-9.png)
+
+6. Determinar la cantidad de vuelos entre las fechas 01/12/2021 y 31/01/2022. Mostrar consulta y Resultado de la query
+
+```sql
+SELECT count(*) AS cantidad_vuelos
+FROM aeropuerto_tabla at
+WHERE at.fecha BETWEEN "2021-12-01" AND "2022-01-31";
+```
+
+![cantidad de vuelos entre diciembre 2021 y enero 2022](image-10.png)
+
