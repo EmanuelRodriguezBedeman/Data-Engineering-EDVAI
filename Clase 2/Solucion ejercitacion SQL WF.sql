@@ -34,12 +34,12 @@ SELECT
 FROM orders o;
 
 -- 5. Seleccione el id de producto, el nombre de producto, el precio unitario, el id de categoría y el precio unitario máximo para cada categoría de la tabla Products.
-SELECT 
+SELECT
 	p.product_id,
 	p.product_name,
 	p.unit_price,
 	p.category_id,
-	MAX(p.unit_price) OVER (PARTITION BY p.category_id) as maxunitprice   
+	MAX(p.unit_price) OVER (PARTITION BY p.category_id) as maxunitprice
 FROM products p;
 
 -- 6. Obtener el ranking de los productos más vendidos
