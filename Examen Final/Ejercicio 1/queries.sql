@@ -14,6 +14,28 @@ WHERE
 SELECT 
 	AT.fecha,
 	AT.hourautc,
+	CASE 
+		WHEN `tipo_de_movimiento` = 'Aterrizaje' THEN 'Salida'
+		WHEN `tipo_de_movimiento` = 'Aterrizaje' THEN AT.aeropuerto AS 'codigo_aeropuerto_arribo'
+		WHEN `tipo_de_movimiento` = 'Despegue' THEN 'Arribo'
+		WHEN `tipo_de_movimiento` = 'Aterrizaje' THEN AT.aeropuerto AS 'codigo_aeropuerto_salida'
+	END `tipo_de_vuelo`,
+	AT.pasajeros
+FROM aeropuerto_tabla AT
+WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
+ORDER BY AT.fecha DESC;
+
+SELECT 
+	AT.fecha,
+	AT.hourautc,
+	CASE 
+		WHEN tipo_de_movimiento = 'Aterrizaje' THEN 'Arribo'
+		WHEN tipo_de_movimiento = 'Despegue' THEN 'Salida'
+	END AS tipo_de_vuelo,
+	CASE 
+		WHEN tipo_de_movimiento = 'Aterrizaje' THEN AT.aeropuerto
+		WHEN tipo_de_movimiento = 'Despegue' THEN AT.aeropuerto
+	END AS codigo_aeropuerto,
 	AT.pasajeros
 FROM aeropuerto_tabla AT
 WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
