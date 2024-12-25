@@ -321,7 +321,42 @@ LIMIT 10;
 
 ![top 10 aerolineas con mas pasajeros](image-12.png)
 
-<!-- OJO QUE FALTA VISUALIZACION!! -->
+![Visualizacion top 10 aerolineas con mas pasajeros](image-13.png)
 
 10. Cuales son las 10 aeronaves más utilizadas entre el 01/01/2021 y el 30/06/22 que despegaron desde la Ciudad autónoma de Buenos Aires o de Buenos Aires, exceptuando aquellas aeronaves que no cuentan con nombre. Mostrar consulta y Visualización
 
+```sql
+-- Vista temporal de aeropuertos en BsAs / CABA
+CREATE VIEW aeropuertos_bsas AS
+SELECT 
+	adt.aeropuerto,
+	adt.provincia
+FROM aeropuerto_detalles_tabla adt
+WHERE adt.provincia IN ("BUENOS AIRES", "CIUDAD AUTÓNOMA DE BUENOS AIRES");
+
+-- Vista temporal de aeronaves en fecha pedida, no nulas y que despegan
+CREATE VIEW aeronaves AS
+SELECT
+	AT.aeropuerto,
+	AT.aeronave
+FROM aeropuerto_tabla AT
+WHERE AT.fecha BETWEEN "2021-01-01" AND "2022-06-30"
+AND (AT.aeronave IS NOT NULL) AND (AT.aeronave <> "0")
+AND AT.tipo_de_movimiento == "Despegue";
+
+-- Top 10 aeronaves mas utilizadas, union vistas temporales
+SELECT
+	RANK() OVER (ORDER BY COUNT(a.aeronave) DESC) AS `Ranking`,
+	a.aeronave AS `Aeronave`,
+	COUNT(a.aeronave) AS `Numero aeronaves`
+FROM aeronaves a
+INNER JOIN aeropuertos_bsas bs
+ON a.aeropuerto = bs.aeropuerto
+WHERE bs.provincia = "CIUDAD AUTÓNOMA DE BUENOS AIRES"
+GROUP BY a.aeronave
+LIMIT 10;
+```
+
+![top 10 aeronaves](image-14.png)
+
+![visualizacion top 10 aeronaves](image-15.png)
