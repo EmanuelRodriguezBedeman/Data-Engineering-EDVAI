@@ -11,10 +11,6 @@ WHERE
 	AT.fecha BETWEEN "2021-01-01" AND "2022-06-30";
 
 -- 8. Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente.
-
-SELECT count(adt.denominacion) AS numero_aeropuertos
-FROM aeropuerto_detalles_tabla adt;
-
 SELECT 
 	AT.fecha,
 	AT.hourautc,
