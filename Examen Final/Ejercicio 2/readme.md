@@ -88,3 +88,60 @@ location '/tables/external/car_rental_analytics';
 
 ![screenshot comandos en consola creacion bd y tabla](image.png)
 
+2. Crear script para el ingest de estos dos files
+
+* https://dataengineerpublic.blob.core.windows.net/data-engineer/CarRentalData.csv
+* https://dataengineerpublic.blob.core.windows.net/data-engineer/georef-united-states-of-america-state.csv
+
+> **Sugerencia**: descargar el segundo archivo con un comando similar al abajo mencionado, ya que al tener caracteres como ‘&’ falla si no se le asignan comillas. Adicionalmente, el parámetro -O permite asignarle un nombre más legible al archivo descargado
+
+```bash
+wget -P ruta_destino -O ruta_destino/nombre_archivo.csv ruta_al_archivo
+```
+
+*Info del dataset*: https://www.kaggle.com/datasets/kushleshkumar/cornell-car-rental-dataset
+
+```bash
+nano car_rental_ingest.sh
+```
+
+```bash
+#!/bin/bash
+
+# Mensaje de inicio
+echo "****** Inicio Ingesta Alquiler Automoviles ******"
+
+# Directorio landing en hadoop
+LANDING_DIR="/home/hadoop/landing"
+
+# Directorio destino en HDFS
+DEST_DIR="/ingest"
+
+# Link al bucket
+LINK="https://dataengineerpublic.blob.core.windows.net/data-engineer/"
+
+# Nombre archivos
+CAR_RENTAL="CarRentalData.csv"
+GEOREF="georef-united-states-of-america-state.csv"
+
+# Descarga archivos
+wget -P $LANDING_DIR $LINK$CAR_RENTAL
+wget -P $LANDING_DIR -O $LANDING_DI/$GEOREF $LINK$GEOREF
+
+# Mover archivos a HDFS
+hdfs dfs -put $LANDING_DIR/$CAR_RENTAL $DEST_DIR
+hdfs dfs -put $LANDING_DIR/$GEOREF $DEST_DIR
+
+# Remueve archivos
+rm $LANDING_DIR/$CAR_RENTAL
+rm $LANDING_DIR/$GEOREF
+
+# Mensaje de finalizacion
+echo "\n****** Fin Ingesta Alquiler Automoviles ******"
+```
+
+![captura comandos punto 2](image-1.png)
+
+```bash
+chmod 555 car_rental_ingest.sh
+```
