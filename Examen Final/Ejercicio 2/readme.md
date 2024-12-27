@@ -7,7 +7,7 @@ Una de las empresas líderes en alquileres de automóviles solicita una serie de
 
 Como Data Engineer debe crear y automatizar el pipeline para tener como resultado los datos listos para ser visualizados y responder las preguntas de negocio.
 
-1. Crear en `hive` una database `car_rental_db` y dentro una tabla llamada `car_rental_analytics`, con estos campos:
+**1.** Crear en `hive` una database `car_rental_db` y dentro una tabla llamada `car_rental_analytics`, con estos campos:
 
 <div align="center">
     <table>
@@ -88,7 +88,7 @@ location '/tables/external/car_rental_analytics';
 
 ![screenshot comandos en consola creacion bd y tabla](image.png)
 
-2. Crear script para el ingest de estos dos files
+**2.** Crear script para el ingest de estos dos files
 
 * https://dataengineerpublic.blob.core.windows.net/data-engineer/CarRentalData.csv
 * https://dataengineerpublic.blob.core.windows.net/data-engineer/georef-united-states-of-america-state.csv
@@ -144,4 +144,37 @@ echo "\n****** Fin Ingesta Alquiler Automoviles ******"
 
 ```bash
 chmod 555 car_rental_ingest.sh
+```
+
+**3.** Crear un script para tomar el archivo desde HDFS y hacer las siguientes transformaciones:
+* En donde sea necesario, modificar los nombres de las columnas. Evitar espacios y puntos (reemplazar por _ ). Evitar nombres de columna largos
+* Redondear los float de ‘rating’ y castear a int.
+* Joinear ambos files
+* Eliminar los registros con rating nulo
+* Cambiar mayúsculas por minúsculas en ‘fuelType’
+* Excluir el estado Texas \
+Finalmente insertar en Hive el resultado.
+
+```python
+# Import librerias y creacion de sesion en Spark
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+
+spark = SparkSession.builder \
+    .appName("Car Rental") \
+    .enableHiveSupport() \
+    .getOrCreate()
+
+# Carga de datos
+car_rental = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/CarRentalData.csv')
+georef = spark.read.option('header', 'true').option('sep', ';').csv('hdfs://172.17.0.2:9000/ingest/georef-united-states-of-america-state.csv')
+
+# Columnas originales
+rental_columns = car_rental.columns
+
+# Columnas modificadas ('_' en lugar de '.')
+new_columns = [col.replace('.', '_') if '.' in col else col for col in rental_columns]
+
+# DF con columnas modificadas
+car_rental_mod = car_rental.toDF(*new_columns)
 ```
