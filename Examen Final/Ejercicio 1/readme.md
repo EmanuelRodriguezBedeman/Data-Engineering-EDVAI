@@ -31,9 +31,9 @@ https://dataengineerpublic.blob.core.windows.net/data-engineer/aeropuertos_detal
 nano aviacion_ingest.sh
 ```
 
-![creacion aviacion_ingest.sh](image-2.png)
+![creacion aviacion_ingest.sh](imgs/image-2.png)
 
-![Creacion en nano de aviacion_ingest.sh](image-3.png)
+![Creacion en nano de aviacion_ingest.sh](imgs/image-3.png)
 
 **Archivo** `aviacion_ingest.sh`:
 
@@ -79,7 +79,7 @@ Genera permisos de lectura y de ejecución para el archivo `aviacion_ingest.sh`:
 chmod 555 aviacion_ingest.sh
 ```
 
-![Permisos aviacion_ingest.sh](image-4.png)
+![Permisos aviacion_ingest.sh](imgs/image-4.png)
 
 **2.** Crear 2 tablas en el datawarehouse, una para los vuelos realizados en 2021 y 2022 (2021-informe-ministerio.csv y 202206-informe-ministerio) y otra tabla para el detalle de los aeropuertos (aeropuertos_detalle.csv).
 
@@ -110,7 +110,7 @@ FIELDS TERMINATED BY ','
 location '/tables/external/aeropuerto_tabla';
 ```
 
-![creacion tabla aeropuerto_tabla](image.png)
+![creacion tabla aeropuerto_tabla](imgs/image.png)
 
 Crea tabla `aeropuerto_detalles_tabla`:
 
@@ -144,7 +144,7 @@ FIELDS TERMINATED BY ','
 location '/tables/external/aeropuerto_detalles_tabla';
 ```
 
-![creacion tabla aeropuerto_detalles_tabla](image-1.png)
+![creacion tabla aeropuerto_detalles_tabla](imgs/image-1.png)
 
 **3.** Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos tablas creadas.
 
@@ -200,7 +200,7 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
-![Pipeline aviacion](image-7.png)
+![Pipeline aviacion](imgs/image-7.png)
 
 **4.** Realizar las siguiente transformaciones en los pipelines de datos:
 * Eliminar la columna inhab ya que no se utilizará para el análisis
@@ -212,7 +212,7 @@ if __name__ == "__main__":
 
 Creacion de archivo `aviacion_transformacion.py`:
 
-![Creacion de aviacion_transformacion.py](image-5.png)
+![Creacion de aviacion_transformacion.py](imgs/image-5.png)
 
 ```python
 # Import librerias y creacion de sesion en Spark
@@ -266,17 +266,17 @@ vuelos_mod_domesticos_filtered.write.insertInto("aviacion.aeropuerto_tabla")
 aeropuertos_transformado.write.insertInto("aviacion.aeropuerto_detalles_tabla")
 ```
 
-![Permisos aviacion_transformacion.py](image-6.png)
+![Permisos aviacion_transformacion.py](imgs/image-6.png)
 
 **5.** Mostrar mediante una impresión de pantalla, que los tipos de campos de las tablas sean los solicitados en el datawarehouse (ej: fecha date, aeronave string, pasajeros integer, etc.)
 
 Esquema tabla `aeropuerto_tabla`:
 
-![Esquema tabla aeropuerto_tabla](image-8.png)
+![Esquema tabla aeropuerto_tabla](imgs/image-8.png)
 
 Esquema tabla `aeropuerto_detalles_tabla`:
 
-![ESquema tabla aeropuerto_detalles_tabla](image-9.png)
+![ESquema tabla aeropuerto_detalles_tabla](imgs/image-9.png)
 
 **6.** Determinar la cantidad de vuelos entre las fechas 01/12/2021 y 31/01/2022. Mostrar consulta y Resultado de la query
 
@@ -286,7 +286,7 @@ FROM aeropuerto_tabla AT
 WHERE AT.fecha BETWEEN "2021-12-01" AND "2022-01-31";
 ```
 
-![cantidad de vuelos entre diciembre 2021 y enero 2022](image-10.png)
+![cantidad de vuelos entre diciembre 2021 y enero 2022](imgs/image-10.png)
 
 **7.** Cantidad de pasajeros que viajaron en Aerolíneas Argentinas entre el 01/01/2021 y 30/06/2022. Mostrar consulta y Resultado de la query
 
@@ -298,7 +298,7 @@ WHERE
 	AT.fecha BETWEEN "2021-01-01" AND "2022-06-30";
 ```
 
-![cantidad pasajeros entre enero 2021 y junio 2022](image-11.png)
+![cantidad pasajeros entre enero 2021 y junio 2022](imgs/image-11.png)
 
 **8.** Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente. Mostrar consulta y Resultado de la query
 
@@ -379,7 +379,7 @@ AND vs.hourautc = va.hourautc
 ORDER BY fecha DESC;
 ```
 
-![resultado query 8](image-17.png)
+![resultado query 8](imgs/image-17.png)
 
 **9.** Cuales son las 10 aerolíneas que más pasajeros llevaron entre el 01/01/2021 y el 30/06/2022 exceptuando aquellas aerolíneas que no tengan nombre. Mostrar consulta y Visualización.
 
@@ -395,9 +395,9 @@ GROUP BY AT.aerolinea_nombre
 LIMIT 10;
 ```
 
-![top 10 aerolineas con mas pasajeros](image-12.png)
+![top 10 aerolineas con mas pasajeros](imgs/image-12.png)
 
-![Visualizacion top 10 aerolineas con mas pasajeros](image-13.png)
+![Visualizacion top 10 aerolineas con mas pasajeros](imgs/image-13.png)
 
 **10.** Cuales son las 10 aeronaves más utilizadas entre el 01/01/2021 y el 30/06/22 que despegaron desde la Ciudad autónoma de Buenos Aires o de Buenos Aires, exceptuando aquellas aeronaves que no cuentan con nombre. Mostrar consulta y Visualización
 
@@ -433,9 +433,9 @@ GROUP BY a.aeronave
 LIMIT 10;
 ```
 
-![top 10 aeronaves](image-14.png)
+![top 10 aeronaves](imgs/image-14.png)
 
-![visualizacion top 10 aeronaves](image-15.png)
+![visualizacion top 10 aeronaves](imgs/image-15.png)
 
 **11.** Qué datos externos agregaría en este dataset que mejoraría el análisis de los datos
 
@@ -459,4 +459,4 @@ Sugiero una mejora en la base de datos de "_Listado de vuelos realizados_". Ser�
 
 Propongo una arquitectura alternativa también de tipo Batch en Cloud:
 
-![Arquitectura alternativa Batch en Cloud](image-16.png)
+![Arquitectura alternativa Batch en Cloud](imgs/image-16.png)
