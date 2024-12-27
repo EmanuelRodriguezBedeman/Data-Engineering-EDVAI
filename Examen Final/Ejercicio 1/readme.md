@@ -303,7 +303,83 @@ WHERE
 **8.** Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente. Mostrar consulta y Resultado de la query
 
 ```sql
+-- Vuelos de salida con su ciudad
+CREATE VIEW vuelos_salida AS
+SELECT 
+  at.fecha,
+  at.hourautc,
+  at.aeropuerto_salida AS `codigo_aeropuerto_salida`,
+  adt.REF AS `ciudad_de_salida`,
+  at.pasajeros
+FROM (
+  SELECT 
+    AT.fecha,
+    AT.hourautc,
+    AT.aeropuerto AS `aeropuerto_salida`,
+    AT.pasajeros
+  FROM aeropuerto_tabla AT
+  WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
+  AND AT.tipo_de_movimiento = "Despegue"
+  UNION
+  SELECT 
+    AT.fecha,
+    AT.hourautc,
+    AT.origen_destino AS `aeropuerto_salida`,
+    AT.pasajeros
+  FROM aeropuerto_tabla AT
+  WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
+  AND AT.tipo_de_movimiento = "Aterrizaje"
+) at
+INNER JOIN aeropuerto_detalles_tabla adt
+ON adt.aeropuerto = at.aeropuerto_salida;
+
+-- Vuelos de arribo con su ciudad
+CREATE VIEW vuelos_arribo AS
+SELECT 
+  at.fecha,
+  at.hourautc,
+  at.aeropuerto_arribo AS `codigo_aeropuerto_arribo`,
+  adt.REF AS `ciudad_de_arribo`,
+  at.pasajeros
+FROM (
+  SELECT 
+    AT.fecha,
+    AT.hourautc,
+    AT.aeropuerto AS `aeropuerto_arribo`,
+    AT.pasajeros
+  FROM aeropuerto_tabla AT
+  WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
+  AND AT.tipo_de_movimiento = "Aterrizaje"
+  UNION
+  SELECT 
+    AT.fecha,
+    AT.hourautc,
+    AT.origen_destino AS `aeropuerto_arribo`,
+    AT.pasajeros
+  FROM aeropuerto_tabla AT
+  WHERE AT.fecha BETWEEN "2022-01-01" AND "2022-06-30"
+  AND AT.tipo_de_movimiento = "Despegue"
+) at
+INNER JOIN aeropuerto_detalles_tabla adt
+ON adt.aeropuerto = at.aeropuerto_arribo;
+
+-- union vuelos salida con vuelos arribo con fecha, hora y pasajeros
+SELECT
+	vs.fecha,
+	vs.hourautc,
+	vs.codigo_aeropuerto_salida,
+	vs.ciudad_de_salida,
+	va.codigo_aeropuerto_arribo,
+	va.ciudad_de_arribo,
+	vs.pasajeros + va.pasajeros AS `pasajeros`
+FROM vuelos_salida vs
+INNER JOIN vuelos_arribo va
+ON vs.fecha = va.fecha
+AND vs.hourautc = va.hourautc
+ORDER BY fecha DESC;
 ```
+
+![resultado query 8](image-17.png)
 
 **9.** Cuales son las 10 aerolíneas que más pasajeros llevaron entre el 01/01/2021 y el 30/06/2022 exceptuando aquellas aerolíneas que no tengan nombre. Mostrar consulta y Visualización.
 
