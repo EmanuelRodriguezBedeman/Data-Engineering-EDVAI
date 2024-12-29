@@ -258,3 +258,96 @@ df_final.write.insertInto('car_rental_db.car_rental_analytics')
 a. Un DAG padre que ingente los archivos y luego llame al DAG hijo. \
 b. Un DAG hijo que procese la información y la cargue en Hive.
 
+`nano car_rental_parent_dag.py`
+
+`car_rental_parent_dag.py`:
+
+```bash
+from datetime import timedelta
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.triggers_dagrun import TriggerDagRunOperator
+from airflow.utils.dates import days_ago
+
+args = {
+    'owner': 'airflow',
+}
+
+with DAG(
+    dag_id='Car_rental_parent',
+    default_args=args,
+    schedule_interval='0 0 * * *',
+    start_date=days_ago(1),
+    catchup=False,
+    dagrun_timeout=timedelta(minutes=60),
+    tags=['ingest', 'transform'],
+    params={"example_key": "example_value"},
+) as dag:
+
+    ingest = BashOperator(
+        task_id='ingesta',
+        bash_command='/usr/bin/sh /home/hadoop/scripts/car_rental_ingest.sh ',
+    )
+
+    trigger_target = TriggerDagRunOperator(
+        task_id = 'trigger_target',
+        trigger_dag_id = 'Car_rental_son',
+        execution_date = '{{ ds }}',
+        reset_dag_run = True,
+        wait_for_completion = True,
+        poke_interval = 30
+    )
+
+    ingest >> trigger_target
+
+if __name__ == "__main__":
+    dag.cli()
+```
+
+![DAG graph car_rental_parent_dag.py](image-3.png)
+
+`nano car_rental_son_dag.py`
+
+`car_rental_son_dag.py`:
+
+```bash
+from datetime import timedelta
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.dummy import DummyOperator
+from airflow.utils.dates import days_ago
+
+args = {
+    'owner': 'airflow',
+}
+
+with DAG(
+    dag_id='Car_rental_son',
+    default_args=args,
+    schedule_interval='0 0 * * *',
+    start_date=days_ago(1),
+    catchup=False,
+    dagrun_timeout=timedelta(minutes=60),
+    tags=['ingest', 'transform'],
+    params={"example_key": "example_value"},
+) as dag:
+
+    finaliza_proceso = DummyOperator(
+        task_id='finaliza_proceso',
+    )
+
+    transform = BashOperator(
+        task_id='transformacion',
+        bash_command='ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/car_rental_transformacion.py ',
+    )
+
+    transform >> finaliza_proceso
+
+if __name__ == "__main__":
+    dag.cli()
+```
+
+![DAG graph car_rental_son_dag.py](image-4.png)
+
+![screenshot comandos del ejercicio](image-2.png)
+
