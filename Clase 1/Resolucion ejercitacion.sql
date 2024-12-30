@@ -1,8 +1,8 @@
--- 1. Obtener una lista de todos los títulos de contacto distintos
+-- 1. Obtener una lista de todas las categorías distintas
 SELECT DISTINCT c.category_name
 FROM categories c;
 
--- 2. Obtener una lista de todos los títulos de contacto distintos
+-- 2. Obtener una lista de todas las regiones distintas para los clientes
 SELECT DISTINCT c.region
 FROM customers c;
 
@@ -10,12 +10,12 @@ FROM customers c;
 SELECT DISTINCT c.contact_title
 FROM customers c;
 
--- 4. Obtener una lista de todos los títulos de contacto distintos
+-- 4. Obtener una lista de todos los clientes, ordenados por país
 SELECT *
 FROM customers c
 ORDER BY c.country;
 
--- 5. Obtener una lista de todos los pedidos, ordenados por id del empleado y fecha del pedido
+-- 5. Obtener una lista de todos los pedidos, ordenados por id del empleado y fecha del pedido:
 SELECT *
 FROM orders o
 ORDER BY o.employee_id, o.order_date; 
