@@ -24,7 +24,12 @@ GROUP BY cra.model, cra.make
 LIMIT 10;
 
 --d. Mostrar por año, cuántos alquileres se hicieron, teniendo en cuenta automóviles fabricados desde 2010 a 2015
-
+SELECT
+	cra.YEAR AS `año_fabricacion`,
+	count(cra.year) AS `cantidad_alquileres`
+FROM car_rental_analytics cra
+WHERE cra.year BETWEEN 2010 AND 2015
+GROUP BY cra.YEAR;
 
 --e. Las 5 ciudades con más alquileres de vehículos ecológicos (fuelType hibrido o electrico)
 
