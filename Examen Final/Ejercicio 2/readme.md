@@ -362,25 +362,44 @@ WHERE cra.fueltype IN ('hybrid', 'electric')
 AND cra.rating <= 4;
 ```
 
-![resutlado query 5a](image-5.png)
+![resultado query 5a](image-5.png)
 
 b. Los 5 estados con menor cantidad de alquileres (mostrar query y visualización).
 
 ```sql
+SELECT
+	ROW_NUMBER() OVER (ORDER BY COUNT(cra.model)) AS `Rank`,
+	cra.state_name,
+	COUNT(cra.model) AS `cantidad_alquileres`
+FROM car_rental_analytics cra
+GROUP BY cra.state_name
+LIMIT 5;
 ```
+
+![resultado query 5b](image-6.png)
+
+![Visualizacion query 5b](image-7.png)
+
 c. Los 10 modelos (junto con su marca) de autos más rentados (mostrar query y visualización).
 
 ```sql
 ```
+
+
 d. Mostrar por año, cuántos alquileres se hicieron, teniendo en cuenta automóviles fabricados desde 2010 a 2015.
 
 ```sql
 ```
+
+
 e. Las 5 ciudades con más alquileres de vehículos ecológicos (fuelType hibrido o electrico).
 
 ```sql
 ```
+
+
 f. El promedio de reviews, segmentando por tipo de combustible.
 
 ```sql
 ```
+
