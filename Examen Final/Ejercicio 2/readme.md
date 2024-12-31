@@ -86,7 +86,7 @@ FIELDS TERMINATED BY ','
 location '/tables/external/car_rental_analytics';
 ```
 
-![screenshot comandos en consola creacion bd y tabla](image.png)
+![screenshot comandos en consola creacion bd y tabla](imgs/image.png)
 
 **2.** Crear script para el ingest de estos dos files
 
@@ -126,7 +126,7 @@ GEOREF="georef-united-states-of-america-state.csv"
 
 # Descarga archivos
 wget -P $LANDING_DIR $LINK$CAR_RENTAL
-wget -P $LANDING_DIR -O $LANDING_DI/$GEOREF $LINK$GEOREF
+wget -P $LANDING_DIR -O $LANDING_DIR/$GEOREF $LINK$GEOREF
 
 # Mover archivos a HDFS
 hdfs dfs -put $LANDING_DIR/$CAR_RENTAL $DEST_DIR
@@ -140,7 +140,7 @@ rm $LANDING_DIR/$GEOREF
 echo "\n****** Fin Ingesta Alquiler Automoviles ******"
 ```
 
-![captura comandos punto 2](image-1.png)
+![captura comandos punto 2](imgs/image-1.png)
 
 ```bash
 chmod 555 car_rental_ingest.sh
@@ -154,7 +154,6 @@ chmod 555 car_rental_ingest.sh
 * Cambiar mayúsculas por minúsculas en ‘fuelType’
 * Excluir el estado Texas \
 Finalmente insertar en Hive el resultado.
-
 
 `nano car_rental_transform.py`
 
@@ -304,7 +303,7 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
-![DAG graph car_rental_parent_dag.py](image-3.png)
+![DAG graph car_rental_parent_dag.py](imgs/image-3.png)
 
 `nano car_rental_son_dag.py`
 
@@ -347,9 +346,9 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
-![DAG graph car_rental_son_dag.py](image-4.png)
+![DAG graph car_rental_son_dag.py](imgs/image-4.png)
 
-![screenshot comandos del ejercicio](image-2.png)
+![screenshot comandos del ejercicio](imgs/image-2.png)
 
 5. Por medio de consultas SQL al data-warehouse, mostrar:
 
@@ -362,7 +361,7 @@ WHERE cra.fueltype IN ('hybrid', 'electric')
 AND cra.rating >= 4;
 ```
 
-![resultado query 5a](image-5.png)
+![resultado query 5a](imgs/image-5.png)
 
 b. Los 5 estados con menor cantidad de alquileres (mostrar query y visualización).
 
@@ -376,9 +375,9 @@ GROUP BY cra.state_name
 LIMIT 5;
 ```
 
-![resultado query 5b](image-6.png)
+![resultado query 5b](imgs/image-6.png)
 
-![Visualizacion query 5b](image-7.png)
+![Visualizacion query 5b](imgs/image-7.png)
 
 c. Los 10 modelos (junto con su marca) de autos más rentados (mostrar query y visualización).
 
@@ -393,9 +392,9 @@ GROUP BY cra.model, cra.make
 LIMIT 10;
 ```
 
-![resultado query 5c](image-8.png)
+![resultado query 5c](imgs/image-8.png)
 
-![Visualizacion query 5c](image-9.png)
+![Visualizacion query 5c](imgs/image-9.png)
 
 d. Mostrar por año, cuántos alquileres se hicieron, teniendo en cuenta automóviles fabricados desde 2010 a 2015.
 
@@ -408,9 +407,9 @@ WHERE cra.year BETWEEN 2010 AND 2015
 GROUP BY cra.YEAR;
 ```
 
-![resultado query 5d](image-10.png)
+![resultado query 5d](imgs/image-10.png)
 
-![Visualizacion query 5d](image-11.png)
+![Visualizacion query 5d](imgs/image-11.png)
 
 e. Las 5 ciudades con más alquileres de vehículos ecológicos (fuelType hibrido o electrico).
 
@@ -425,9 +424,9 @@ GROUP BY cra.city
 LIMIT 5;
 ```
 
-![resultado query 5e](image-12.png)
+![resultado query 5e](imgs/image-12.png)
 
-![Visualizacion query 5e](image-13.png)
+![Visualizacion query 5e](imgs/image-13.png)
 
 f. El promedio de reviews, segmentando por tipo de combustible.
 
@@ -440,6 +439,10 @@ WHERE cra.fueltype IS NOT NULL
 GROUP BY cra.fueltype;
 ```
 
-![resultado query 5f](image-14.png)
+![resultado query 5f](imgs/image-14.png)
 
- 
+6. Elabore sus conclusiones y recomendaciones sobre este proyecto.
+
+Mis recomendaciones
+
+7. Proponer una arquitectura alternativa para este proceso ya sea con herramientas on premise o cloud (Si aplica)
