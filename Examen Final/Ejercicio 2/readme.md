@@ -105,6 +105,8 @@ wget -P ruta_destino -O ruta_destino/nombre_archivo.csv ruta_al_archivo
 nano car_rental_ingest.sh
 ```
 
+↓
+
 ```bash
 #!/bin/bash
 
@@ -141,6 +143,8 @@ echo "\n****** Fin Ingesta Alquiler Automoviles ******"
 ```
 
 ![captura comandos punto 2](imgs/image-1.png)
+
+↑
 
 ```bash
 chmod 555 car_rental_ingest.sh
@@ -443,6 +447,21 @@ GROUP BY cra.fueltype;
 
 6. Elabore sus conclusiones y recomendaciones sobre este proyecto.
 
-Mis recomendaciones
+En principio, quisiera ordenar los pasos del proyecto, tal que cumplan con un mejor orden, con los pasos mas generalmente utilizados:
+- Ingesta
+- Tranformacion
+- Creacion y carga a Datawarehouse
+- Orquestación
 
-7. Proponer una arquitectura alternativa para este proceso ya sea con herramientas on premise o cloud (Si aplica)
+Si bien, a mi interpretación, los pasos del proyecto fueron dados de manera que la transformacion guíe los campos creados en el DataWarehouse, creo que la mayoria de los procesos siguen este orden, o al menos, es una buena practica realizarlos.
+
+Recomiendo modificar la forma en que se almacenan los datos. \
+Durante la transformación, decidí unir las tablas `car_rental` y `georef` solamente para obtener el nombre completo de los estados ya que era lo único que aportaba valor de esa tabla. 
+
+Sé que es un item pedido en el *punto 3*, pero creo que podría evitarse cambiando la forma en que se cargan los datos, poniendo el nombre completo del estado y no solamente las iniciales. Hacer un JOIN en una transformacion es un proceso muy pesado y costoso de hacer.
+
+Como mi última recomendación, añadí gráficos y resultados de la queries aunque no fueran solicitados por el enunciado para mejorar la interpretación de los mismos.
+
+7. Proponer una arquitectura alternativa para este proceso ya sea con herramientas on premise o cloud (Si aplica).
+
+![Arquitectura alternativa Batch en Cloud](imgs/image-16.png)
