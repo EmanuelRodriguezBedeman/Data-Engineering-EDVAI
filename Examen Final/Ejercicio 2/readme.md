@@ -359,7 +359,7 @@ a. Cantidad de alquileres de autos, teniendo en cuenta sólo los vehículos ecol
 SELECT COUNT(cra.model) AS `cantidad_alquileres_autos`
 FROM car_rental_analytics cra
 WHERE cra.fueltype IN ('hybrid', 'electric')
-AND cra.rating <= 4;
+AND cra.rating >= 4;
 ```
 
 ![resultado query 5a](image-5.png)
@@ -415,11 +415,31 @@ GROUP BY cra.YEAR;
 e. Las 5 ciudades con más alquileres de vehículos ecológicos (fuelType hibrido o electrico).
 
 ```sql
+SELECT 
+	ROW_NUMBER() OVER (ORDER BY COUNT(cra.city) DESC) AS `Rank`,
+	cra.city AS `ciudad`,
+	COUNT(cra.city) AS `cantidad_alquileres`
+FROM car_rental_analytics cra
+WHERE cra.fueltype IN ('hybrid', 'electric')
+GROUP BY cra.city
+LIMIT 5;
 ```
 
+![resultado query 5e](image-12.png)
+
+![Visualizacion query 5e](image-13.png)
 
 f. El promedio de reviews, segmentando por tipo de combustible.
 
 ```sql
+SELECT
+	AVG(cra.reviewcount) AS `promedio_reviews`,
+	cra.fueltype AS `tipo_combustible`
+FROM car_rental_analytics cra
+WHERE cra.fueltype IS NOT NULL
+GROUP BY cra.fueltype;
 ```
 
+![resultado query 5f](image-14.png)
+
+ 
