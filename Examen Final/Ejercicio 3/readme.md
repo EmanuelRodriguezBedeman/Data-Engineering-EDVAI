@@ -12,7 +12,7 @@ Realizar el siguiente LAB, al finalizar pegar un print screen donde se ve su per
 > Cost: 5 Credits \
 > [Link](https://www.cloudskillsboost.google/focuses/4415?catalog_rank=%7B%22rank%22%3A1%2C%22num_filters%22%3A0%2C%22has_search%22%3Atrue%7D&parent=catalog&search_id=32278924)
 
-![SkillBoost Finalizado](image.png)
+![Sreenshot de skillBoost finalizado](imgs/image.png)
 
 # Contestar las siguientes preguntas:
 1. ¿Para que se utiliza data prep?
@@ -80,3 +80,7 @@ Esta arquitectura debería contemplar las siguiente etapas:
 **BI**: Herramientas para visualizar la información almacenada en el Data Warehouse.
 
 **ML**: Herramienta para construir un modelo de regresión lineal con la información almacenada en el Data Warehouse.
+
+## Arquitectura propuesta:
+
+![Arquitectura propuesta](<imgs/EDVAI - Ejercicio 3 Arquitectura.drawio.png>)
