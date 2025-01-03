@@ -33,29 +33,38 @@ Realizar el siguiente LAB, al finalizar pegar un print screen donde se ve su per
 > - Dataflow y Dataproc: Para procesamiento de datos.
 > - Looker Studio: para análisis y visualización de datos.\
 > Herramientas on premise:
-> - Apache Beam, Apache Spark / PySpark: Para procesamiento de datos.
+> - Apache Spark / PySpark: Para procesamiento de datos.
 > - Power BI: Para análisis y visualización de datos.
+> - Python (paquetes Pandas y Seaborn): Para procesar y visualizar datos.
 
-1. ¿Cuáles son los casos de uso comunes de Data Prep de GCP?
-> 
+4. ¿Cuáles son los casos de uso comunes de Data Prep de GCP?
+> Para analizar rapidamente datos, conocerlos rapidamente a traves de su interfaz grafica, limpiar y normalizar datos para mejorar su calidad y por ultimo para crear flujos de trabajo automatizados a traves de sus recipes.
 
-1. ¿Cómo se cargan los datos en Data Prep de GCP?
+5. ¿Cómo se cargan los datos en Data Prep de GCP?
+> Creando un nuevo flujo. Luego de darle un nuevo nombre y una descripcion, pulsamos sobre el signo `+` en donde dice "Connect to your data" y en la ventana emergente pulsamos sobre el texto que dice: "Import datasets" y seleccionamos en el panel de la izquierda que fuente que queremos. Luego elegimos que base de datos utilizar y dentor de ella, que tabla. Pulsamos en el boton "Import & add to flow" para agregarlo al flujo.
 > 
+> En el ejericio de SkillBoost, seleccionamos BigQuery como nuestra fuente de datos, `ecommerce` como la base de datos y la tabla `all_sessions_raw_dataprep`.
 
-1. ¿Qué tipos de datos se pueden preparar en Data Prep de GCP?
-> 
+6. ¿Qué tipos de datos se pueden preparar en Data Prep de GCP?
+> Se pueden preparar tanto datos estructurados y no estructurados.
 
-1. ¿Qué pasos se pueden seguir para limpiar y transformar datos en Data Prep de GCP?
-> 
+7. ¿Qué pasos se pueden seguir para limpiar y transformar datos en Data Prep de GCP?
+> Una vez cargados los datos, debe crearse un nuevo `Recipe` (*Receta*). Para esto, hacer click en el icono de archivo que esta debajo del titulo `*Recipe*` y luego en el panel emergente de la derecha clickear en `*Edit Recipe*`. Una vez dentro de la interfaz grafica de los datos.
+>
+> Luego pueden limpiarse y/o transformarse los datos segun el orden que uno desease, ya sea pulsando sobre los botones de la barra de herramintas o de querer hacer alguna transformacion en una columna especifica, hacer click en los 3 puntos y seleccionar la opcion que uno desee.
 
-1. ¿Cómo se pueden automatizar tareas de preparación de datos en Data Prep de GCP?
-> 
+8. ¿Cómo se pueden automatizar tareas de preparación de datos en Data Prep de GCP?
+> Se puede automatizar a traves de la exportacion de los recipes o work flows.
 
-1.  ¿Qué tipos de visualizaciones se pueden crear en Data Prep de GCP?
-> 
+9. ¿Qué tipos de visualizaciones se pueden crear en Data Prep de GCP?
+> - Tablas y gráficos
+> - Gráficos de barras y líneas
 
-1.    ¿Cómo se puede garantizar la calidad de los datos en Data Prep de GCP?
-> 
+10.  ¿Cómo se puede garantizar la calidad de los datos en Data Prep de GCP?
+> - Validación y verificación de los datos
+> - Uso de reglas de calidad de datos
+> - Monitoreo y seguimiento de la calidad de los datos
+> - Uso de técnicas de limpieza y transformación de datos.
 
 # Arquitectura:
 El gerente de Analitica te pide realizar una arquitectura hecha en GCP que contemple el uso de esta herramienta ya que le parece muy fácil de usar y una interfaz visual que ayuda a sus desarrolladores ya que no necesitan conocer ningún lenguaje de desarrollo.
