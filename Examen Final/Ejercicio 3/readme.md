@@ -57,14 +57,10 @@ Realizar el siguiente LAB, al finalizar pegar un print screen donde se ve su per
 > Se puede automatizar a traves de la exportacion de los recipes o work flows.
 
 9. ¿Qué tipos de visualizaciones se pueden crear en Data Prep de GCP?
-> - Tablas y gráficos
-> - Gráficos de barras y líneas
+> Data Prep no es una herramienta principalmente utilizada para visualizacion, sino que su interfaz grafica ofrece posee un grafico de barras en cada columna de la tabla, la cual, indica cuanto se repite cada uno de sus valores, si hay valores no coincidentes con el tipo de columna y cantidad de valores nulos. Esto permite una facil y veloz interpretacion de los datos junto a su tratado inmediato.
 
-10.  ¿Cómo se puede garantizar la calidad de los datos en Data Prep de GCP?
-> - Validación y verificación de los datos
-> - Uso de reglas de calidad de datos
-> - Monitoreo y seguimiento de la calidad de los datos
-> - Uso de técnicas de limpieza y transformación de datos.
+10.   ¿Cómo se puede garantizar la calidad de los datos en Data Prep de GCP?
+> Se puede garantizar a traves del tratado de datos nulos, datos no coincidentes con el tipo de dato para un campo dado y la amplia gama de transformaciones ofrecidas por la herramienta. El uso de todas estas, permite garantizar la calidad del dato en Data Prep.
 
 # Arquitectura:
 El gerente de Analitica te pide realizar una arquitectura hecha en GCP que contemple el uso de esta herramienta ya que le parece muy fácil de usar y una interfaz visual que ayuda a sus desarrolladores ya que no necesitan conocer ningún lenguaje de desarrollo.

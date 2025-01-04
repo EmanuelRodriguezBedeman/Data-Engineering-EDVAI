@@ -399,6 +399,8 @@ LIMIT 10;
 
 ![top 10 aerolineas con mas pasajeros](imgs/image-12.png)
 
+![alt text](image.png)
+
 ![Visualizacion top 10 aerolineas con mas pasajeros](imgs/image-13.png)
 
 ### **10.** Cuales son las 10 aeronaves más utilizadas entre el 01/01/2021 y el 30/06/22 que despegaron desde la Ciudad autónoma de Buenos Aires o de Buenos Aires, exceptuando aquellas aeronaves que no cuentan con nombre. Mostrar consulta y Visualización
