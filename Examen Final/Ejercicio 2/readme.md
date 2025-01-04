@@ -64,6 +64,8 @@ Como Data Engineer debe crear y automatizar el pipeline para tener como resultad
     </table>
 </div>
 
+Dentro de HIVE:
+
 ```SQL
 CREATE DATABASE car_rental_db;
 ```
@@ -102,6 +104,8 @@ wget -P ruta_destino -O ruta_destino/nombre_archivo.csv ruta_al_archivo
 ```
 
 *Info del dataset*: https://www.kaggle.com/datasets/kushleshkumar/cornell-car-rental-dataset
+
+Creacion del script para ingestar:
 
 ```bash
 nano car_rental_ingest.sh
@@ -148,6 +152,8 @@ echo "\n****** Fin Ingesta Alquiler Automoviles ******"
 
 ↑
 
+Permisos:
+
 ```bash
 chmod 555 car_rental_ingest.sh
 ```
@@ -160,6 +166,8 @@ chmod 555 car_rental_ingest.sh
 * Cambiar mayúsculas por minúsculas en ‘fuelType’
 * Excluir el estado Texas \
 Finalmente insertar en Hive el resultado.
+
+Creacion del script para la transformacion:
 
 `nano car_rental_transform.py`
 
@@ -257,15 +265,19 @@ df_final.write.insertInto('car_rental_db.car_rental_analytics')
 ```
 ↑
 
+Permisos:
+
 `chmod 555 car_rental_transform.py`
 
 4. Realizar un proceso automático en Airflow que orqueste los pipelines creados en los puntos anteriores. Crear dos tareas: \
 a. Un DAG padre que ingente los archivos y luego llame al DAG hijo. \
 b. Un DAG hijo que procese la información y la cargue en Hive.
 
+Creacion del dag padre:
+
 `nano car_rental_parent_dag.py`
 
-`car_rental_parent_dag.py`:
+Contenido:
 
 ```bash
 from datetime import timedelta
@@ -311,9 +323,11 @@ if __name__ == "__main__":
 
 ![DAG graph car_rental_parent_dag.py](imgs/image-3.png)
 
+Creacion del dag hijo:
+
 `nano car_rental_son_dag.py`
 
-`car_rental_son_dag.py`:
+Contenido:
 
 ```bash
 from datetime import timedelta
