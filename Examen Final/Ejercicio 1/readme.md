@@ -18,7 +18,7 @@ https://datos.transporte.gob.ar/dataset/lista-aeropuertos
 
 <h1>TAREAS</h1>
 
-**1.** Hacer ingest de los siguientes files relacionados con transporte aéreo de Argentina:
+### **1.** Hacer ingest de los siguientes files relacionados con transporte aéreo de Argentina:
 
 2021:
 https://dataengineerpublic.blob.core.windows.net/data-engineer/2021-informe-ministerio.csv
@@ -83,7 +83,7 @@ chmod 555 aviacion_ingest.sh
 
 ![Permisos aviacion_ingest.sh](imgs/image-4.png)
 
-**2.** Crear 2 tablas en el datawarehouse, una para los vuelos realizados en 2021 y 2022 (2021-informe-ministerio.csv y 202206-informe-ministerio) y otra tabla para el detalle de los aeropuertos (aeropuertos_detalle.csv).
+### **2.** Crear 2 tablas en el datawarehouse, una para los vuelos realizados en 2021 y 2022 (2021-informe-ministerio.csv y 202206-informe-ministerio) y otra tabla para el detalle de los aeropuertos (aeropuertos_detalle.csv).
 
 Creacion base de datos `aviacion`:
 
@@ -148,7 +148,7 @@ location '/tables/external/aeropuerto_detalles_tabla';
 
 ![creacion tabla aeropuerto_detalles_tabla](imgs/image-1.png)
 
-**3.** Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos tablas creadas.
+### **3.** Realizar un proceso automático orquestado por airflow que ingeste los archivos previamente mencionados entre las fechas *01/01/2021* y *30/06/2022* en las dos tablas creadas.
 
 Los archivos `202206-informe-ministerio.csv` y `202206-informe-ministerio.csv` → en la tabla `aeropuerto_tabla`.
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
 
 ![Pipeline aviacion](imgs/image-7.png)
 
-**4.** Realizar las siguiente transformaciones en los pipelines de datos:
+### **4.** Realizar las siguiente transformaciones en los pipelines de datos:
 * Eliminar la columna inhab ya que no se utilizará para el análisis
 * Eliminar la columna fir ya que no se utilizará para el análisis
 * Eliminar la columna “calidad del dato” ya que no se utilizará para el análisis
@@ -270,7 +270,7 @@ aeropuertos_transformado.write.insertInto("aviacion.aeropuerto_detalles_tabla")
 
 ![Permisos aviacion_transformacion.py](imgs/image-6.png)
 
-**5.** Mostrar mediante una impresión de pantalla, que los tipos de campos de las tablas sean los solicitados en el datawarehouse (ej: fecha date, aeronave string, pasajeros integer, etc.)
+### **5.** Mostrar mediante una impresión de pantalla, que los tipos de campos de las tablas sean los solicitados en el datawarehouse (ej: fecha date, aeronave string, pasajeros integer, etc.)
 
 Esquema tabla `aeropuerto_tabla`:
 
@@ -280,7 +280,7 @@ Esquema tabla `aeropuerto_detalles_tabla`:
 
 ![ESquema tabla aeropuerto_detalles_tabla](imgs/image-9.png)
 
-**6.** Determinar la cantidad de vuelos entre las fechas 01/12/2021 y 31/01/2022. Mostrar consulta y Resultado de la query
+### **6.** Determinar la cantidad de vuelos entre las fechas 01/12/2021 y 31/01/2022. Mostrar consulta y Resultado de la query
 
 ```sql
 SELECT count(AT.fecha) AS cantidad_vuelos
@@ -290,7 +290,7 @@ WHERE AT.fecha BETWEEN "2021-12-01" AND "2022-01-31";
 
 ![cantidad de vuelos entre diciembre 2021 y enero 2022](imgs/image-10.png)
 
-**7.** Cantidad de pasajeros que viajaron en Aerolíneas Argentinas entre el 01/01/2021 y 30/06/2022. Mostrar consulta y Resultado de la query
+### **7.** Cantidad de pasajeros que viajaron en Aerolíneas Argentinas entre el 01/01/2021 y 30/06/2022. Mostrar consulta y Resultado de la query
 
 ```sql
 SELECT SUM(AT.pasajeros) AS cantidad_pasajeros
@@ -302,7 +302,7 @@ WHERE
 
 ![cantidad pasajeros entre enero 2021 y junio 2022](imgs/image-11.png)
 
-**8.** Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente. Mostrar consulta y Resultado de la query
+### **8.** Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente. Mostrar consulta y Resultado de la query
 
 ```sql
 -- Vuelos de salida con su ciudad
@@ -383,7 +383,7 @@ ORDER BY fecha DESC;
 
 ![resultado query 8](imgs/image-17.png)
 
-**9.** Cuales son las 10 aerolíneas que más pasajeros llevaron entre el 01/01/2021 y el 30/06/2022 exceptuando aquellas aerolíneas que no tengan nombre. Mostrar consulta y Visualización.
+### **9.** Cuales son las 10 aerolíneas que más pasajeros llevaron entre el 01/01/2021 y el 30/06/2022 exceptuando aquellas aerolíneas que no tengan nombre. Mostrar consulta y Visualización.
 
 ```sql
 SELECT 
@@ -401,7 +401,7 @@ LIMIT 10;
 
 ![Visualizacion top 10 aerolineas con mas pasajeros](imgs/image-13.png)
 
-**10.** Cuales son las 10 aeronaves más utilizadas entre el 01/01/2021 y el 30/06/22 que despegaron desde la Ciudad autónoma de Buenos Aires o de Buenos Aires, exceptuando aquellas aeronaves que no cuentan con nombre. Mostrar consulta y Visualización
+### **10.** Cuales son las 10 aeronaves más utilizadas entre el 01/01/2021 y el 30/06/22 que despegaron desde la Ciudad autónoma de Buenos Aires o de Buenos Aires, exceptuando aquellas aeronaves que no cuentan con nombre. Mostrar consulta y Visualización
 
 ```sql
 -- Vista temporal de aeropuertos en BsAs / CABA
@@ -439,7 +439,7 @@ LIMIT 10;
 
 ![visualizacion top 10 aeronaves](imgs/image-15.png)
 
-**11.** Qué datos externos agregaría en este dataset que mejoraría el análisis de los datos
+### **11.** Qué datos externos agregaría en este dataset que mejoraría el análisis de los datos
 
 Para mejorar el análisis, agregaría los siguientes datos:
 * Información detallada sobre los pasajeros, como el número de pasajeros que viajaron efectivamente, cancelaciones y, si es posible, la demora y el motivo de la cancelación.
@@ -447,7 +447,7 @@ Para mejorar el análisis, agregaría los siguientes datos:
 * Una tabla adicional con información sobre los precios de los pasajes para cada aerolínea y categoría de servicio, así como datos sobre la antigüedad de las aeronaves de cada aerolínea. Esto me permitiría estimar cuál es la mejor opción en términos de precio y calidad, o identificar servicios más económicos o exclusivos.
 * Por último, datos sobre puentes turísticos y su impacto en la demanda de vuelos. Sería interesante analizar si hubo un aumento significativo en la cantidad de vuelos durante años con más puentes turísticos, y cómo esto afectó la oferta y la demanda en el mercado aéreo.
 
-**12.** Elabore sus conclusiones y recomendaciones sobre este proyecto.
+### **12.** Elabore sus conclusiones y recomendaciones sobre este proyecto.
 
 El objetivo principal de este proyecto es demostrar la capacidad y conocimiento analítico requerido para un Data Engineer, abarcando desde la gestión de consola hasta la implementación de un pipeline completo y funcional
 
@@ -457,7 +457,7 @@ Mis recomendaciones para mejorar el proyecto es, hacer un tratado más profundo 
 
 Sugiero una mejora en la base de datos de "_Listado de vuelos realizados_". Sería muy útil cambiar el esquema mismo de la tabla tal que, en la misma entrada, se pueda ver de donde sale el vuelo, el horario de salida, el destino y el horario de llegada estimado. Además se evitaría la mala práctica de tener que realizar tarnsformaciones en el momento de la explotación de datos. Por último, agregaría una variable que diga si el vuelo fue realizado en el horario estipulado ó si fué reprogramado ó cancelado.
 
-**13.** Proponer una arquitectura alternativa para este proceso ya sea con herramientas on premise o cloud (Sí aplica)
+### **13.** Proponer una arquitectura alternativa para este proceso ya sea con herramientas on premise o cloud (Sí aplica)
 
 Propongo una arquitectura alternativa también de tipo Batch en Cloud:
 

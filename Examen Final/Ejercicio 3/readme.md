@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>Google Skills Boost - Examen Final</h1>
+  <h1>Ejercicio 3 - Google Skills Boost - Examen Final</h1>
   
   ![img](https://cdn.prod.website-files.com/61d5f00789a4ab4d52adcd5f/61f40048bdb455e078ad6cf8_Logotype.svg)
   <h3>Lab</h3>
