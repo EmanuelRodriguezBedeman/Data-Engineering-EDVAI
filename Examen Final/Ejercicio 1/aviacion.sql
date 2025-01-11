@@ -10,9 +10,6 @@ WHERE
 	AT.aerolinea_nombre = "AEROLINEAS ARGENTINAS SA" AND
 	AT.fecha BETWEEN "2021-01-01" AND "2022-06-30";
 
-SELECT DISTINCT AT.aerolinea_nombre
-FROM aeropuerto_tabla AT;
-
 -- 8. Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente.
 -- Vuelos de salida con su ciudad
 CREATE VIEW vuelos_salida AS

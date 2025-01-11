@@ -299,7 +299,6 @@ WHERE
 	AT.aerolinea_nombre = "AEROLINEAS ARGENTINAS SA" AND
 	AT.fecha BETWEEN "2021-01-01" AND "2022-06-30";
 ```
-
 ![cantidad pasajeros entre enero 2021 y junio 2022](imgs/image-11.png)
 
 ### **8.** Mostrar fecha, hora, código aeropuerto salida, ciudad de salida, código de aeropuerto de arribo, ciudad de arribo, y cantidad de pasajeros de cada vuelo, entre el 01/01/2022 y el 30/06/2022 ordenados por fecha de manera descendiente. Mostrar consulta y Resultado de la query
@@ -398,8 +397,6 @@ LIMIT 10;
 ```
 
 ![top 10 aerolineas con mas pasajeros](imgs/image-12.png)
-
-![alt text](image.png)
 
 ![Visualizacion top 10 aerolineas con mas pasajeros](imgs/image-13.png)
 
