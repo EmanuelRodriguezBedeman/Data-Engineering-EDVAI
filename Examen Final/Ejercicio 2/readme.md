@@ -375,7 +375,7 @@ if __name__ == "__main__":
 a. Cantidad de alquileres de autos, teniendo en cuenta sólo los vehículos ecológicos (fuelType hibrido o eléctrico) y con un rating de al menos 4.
 
 ```sql
-SELECT COUNT(cra.model) AS `cantidad_alquileres_autos`
+SELECT SUM(cra.rentertripstaken) AS cantidad_alquileres
 FROM car_rental_analytics cra
 WHERE cra.fueltype IN ('hybrid', 'electric')
 AND cra.rating >= 4;
@@ -387,15 +387,15 @@ b. Los 5 estados con menor cantidad de alquileres (mostrar query y visualizació
 
 ```sql
 SELECT
-	ROW_NUMBER() OVER (ORDER BY COUNT(cra.state_name)) AS `Rank`,
 	cra.state_name,
-	COUNT(cra.state_name) AS `cantidad_alquileres`
+	SUM(cra.rentertripstaken) AS cantidad_alquileres
 FROM car_rental_analytics cra
 GROUP BY cra.state_name
+ORDER BY cantidad_alquileres
 LIMIT 5;
 ```
 
-![resultado query 5b](imgs/image-6.png)
+![Resultado query 5b](imgs/image-6.png)
 
 ![Visualizacion query 5b](imgs/image-7.png)
 
@@ -403,12 +403,11 @@ c. Los 10 modelos (junto con su marca) de autos más rentados (mostrar query y v
 
 ```sql
 SELECT
-	ROW_NUMBER() OVER (ORDER BY COUNT(cra.model) DESC) AS `Rank`,
-	cra.model AS `modelo`,
-	cra.make `marca`,
-	COUNT(cra.model) AS `cantidad_alquileres`
+	CONCAT(cra.make, ' ', cra.model) AS auto,
+	SUM(cra.rentertripstaken) AS `cantidad_alquileres`
 FROM car_rental_analytics cra
 GROUP BY cra.model, cra.make
+ORDER BY cantidad_alquileres DESC
 LIMIT 10;
 ```
 
@@ -420,8 +419,8 @@ d. Mostrar por año, cuántos alquileres se hicieron, teniendo en cuenta automó
 
 ```sql
 SELECT
-	cra.YEAR AS `año_fabricacion`,
-	count(cra.year) AS `cantidad_alquileres`
+	cra.YEAR AS `anio_fabricacion`,
+	SUM(cra.rentertripstaken) AS `cantidad_alquileres`
 FROM car_rental_analytics cra
 WHERE cra.year BETWEEN 2010 AND 2015
 GROUP BY cra.YEAR;
@@ -434,7 +433,7 @@ GROUP BY cra.YEAR;
 e. Las 5 ciudades con más alquileres de vehículos ecológicos (fuelType hibrido o electrico).
 
 ```sql
-SELECT 
+SELECT
 	ROW_NUMBER() OVER (ORDER BY COUNT(cra.city) DESC) AS `Rank`,
 	cra.city AS `ciudad`,
 	COUNT(cra.city) AS `cantidad_alquileres`
@@ -461,7 +460,7 @@ GROUP BY cra.fueltype;
 
 ![resultado query 5f](imgs/image-14.png)
 
-6. Elabore sus conclusiones y recomendaciones sobre este proyecto.
+1. Elabore sus conclusiones y recomendaciones sobre este proyecto.
 
 En principio, quisiera ordenar los pasos del proyecto, tal que cumplan con un mejor orden, con los pasos mas generalmente utilizados:
 - Ingesta
