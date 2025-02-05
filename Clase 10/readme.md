@@ -22,7 +22,7 @@ wget -P /home/nifi/ingest https://dataengineerpublic.blob.core.windows.net/data-
 
 ### Proceso completo en Nifi
 
-![Proceso en nifi](image.png)
+![Proceso en nifi](imgs/image.png)
 
 #### 7) Una vez que tengamos el archivo titanic.csv en HDFS realizar un pipeline en Airflow que ingeste este archivo y lo cargue en HIVE, teniendo en cuenta las siguientes transformaciones:
 
@@ -85,7 +85,7 @@ gp_sex = titanic_mod.groupBy('Sex').agg(round(avg('Age'), 0).alias('avg_age')).w
 titanic_age = titanic_mod.join(gp_sex, on='Sex', how='inner')
 
 # Rellena nulos con 0
-titanic_final = titanic_age.fillna(0, ["Cabin"])
+titanic_final = titanic_age.fillna("0", ["Cabin"])
 
 # Castea columna a formato correspondiente
 titanic_final = titanic_final \
@@ -142,15 +142,61 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
-![DAG en Airflow](image-1.png)
+![DAG en Airflow](imgs/image-1.png)
 
 #### 8) Una vez con la información en el datawarehouse calcular:
 
     a) Cuántos hombres y cuántas mujeres sobrevivieron
 
+```sql
+SELECT
+	tn.sex AS `Sexo`,
+	SUM(tn.survived) AS `Sobrevivientes`
+FROM titanic_nifi tn
+WHERE tn.survived = 1
+GROUP BY tn.sex;
+```
+
+![Resultado query 8a](imgs/image-2.png)
+
     b) Cuántas personas sobrevivieron según cada clase (Pclass)
+
+```sql
+SELECT
+	tn.pclass AS `Clase`,
+	SUM(tn.survived) AS `Sobrevivientes`
+FROM titanic_nifi tn
+WHERE tn.survived = 1
+GROUP BY tn.pclass;
+```
+
+![Resultado query 8b](imgs/image-3.png)
 
     c) Cuál fue la persona de mayor edad que sobrevivió
 
+```sql
+SELECT
+	tn.name AS `Nombre`,
+	tn.age AS `edad`
+FROM titanic_nifi tn
+WHERE tn.survived = 1
+ORDER BY edad DESC
+LIMIT 1;
+```
+
+![Resultado query 8c](imgs/image-4.png)
+
     d) Cuál fue la persona más joven que sobrevivió
 
+```sql
+SELECT
+	tn.name AS `Nombre`,
+	tn.age AS `edad`
+FROM titanic_nifi tn
+WHERE tn.survived = 1
+AND tn.age IS NOT NULL
+ORDER BY edad
+LIMIT 1;
+```
+
+![Resultado query 8d](imgs/image-5.png)
