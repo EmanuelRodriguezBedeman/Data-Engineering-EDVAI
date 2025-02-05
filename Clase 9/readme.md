@@ -1,4 +1,4 @@
-## Resolucion ejercicios
+## Resolucion ejercitacion 9
 
 1. Crear una base de datos en Hive llamada `northwind_analytics`
 

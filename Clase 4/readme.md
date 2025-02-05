@@ -1,4 +1,4 @@
-# Solucion Ejercicios Clase 4 
+# Solucion Ejercitacion 4
 
 - [Consignas](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/Clase%204%20-%20Ejercicios%20Sqoop%20y%20Nifi%20-%20Alumnos.pdf)
 - Soluciones:
@@ -82,7 +82,7 @@ sqoop import \
 
 > ↓ **Script**: [ingest.sh](https://github.com/EmanuelRodriguezBedeman/Data-Engineering-EDVAI/blob/main/Clase%204/ingest.sh) ↓
 
-```
+```bash
 # Indica que interprete debe usar el script
 #!/bin/bash
 

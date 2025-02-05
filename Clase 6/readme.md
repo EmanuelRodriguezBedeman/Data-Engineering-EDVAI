@@ -1,4 +1,4 @@
-# Resolucion ejercicios
+# Resolucion ejercitacion 6
 
 ## 1. En Hive, crear las siguientes tablas (internas) en la base de datos `tripdata` en hive
 

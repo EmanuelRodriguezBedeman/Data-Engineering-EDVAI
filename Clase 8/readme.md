@@ -1,4 +1,4 @@
-## Resolucion ejercicios
+## Resolucion ejercitacion 8
 
 ### **1.** Crear la siguientes tablas externas en la base de datos f1 en hive:
     a. `driver_results (driver_forename, driver_surname, driver_nationality, points)`
