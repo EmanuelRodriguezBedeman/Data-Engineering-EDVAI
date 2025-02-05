@@ -24,7 +24,7 @@ wget -P /home/nifi/ingest https://dataengineerpublic.blob.core.windows.net/data-
 
 ![Proceso en nifi](image.png)
 
-7) Una vez que tengamos el archivo titanic.csv en HDFS realizar un pipeline en Airflow que ingeste este archivo y lo cargue en HIVE, teniendo en cuenta las siguientes transformaciones:
+#### 7) Una vez que tengamos el archivo titanic.csv en HDFS realizar un pipeline en Airflow que ingeste este archivo y lo cargue en HIVE, teniendo en cuenta las siguientes transformaciones:
 
     a) Remover las columnas SibSp y Parch
 
@@ -43,20 +43,20 @@ Creacion de la tabla en `Hive`:
 ```bash
 CREATE EXTERNAL TABLE titanic_nifi(
     Sex STRING,
-    PassengerId INT,
-    Survived INT,
-    Pclass INT,
+    passengerid INT,
+    survived INT,
+    pclass INT,
     Name STRING,
-    Age INT,
+    age INT,
     Ticket STRING,
-    Fare FLOAT,
+    fare FLOAT,
     Cabin STRING,
     Embarked STRING,
     avg_age INT
     )
 COMMENT "BD Ejercicio NIfi y Airflow"
 ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
+FIELDS TERMINATED BY '\t'
 location '/tables/external/titanic_nifi';
 ```
 
@@ -142,7 +142,9 @@ if __name__ == "__main__":
     dag.cli()
 ```
 
-8) Una vez con la información en el datawarehouse calcular:
+![DAG en Airflow](image-1.png)
+
+#### 8) Una vez con la información en el datawarehouse calcular:
 
     a) Cuántos hombres y cuántas mujeres sobrevivieron
 
@@ -152,4 +154,3 @@ if __name__ == "__main__":
 
     d) Cuál fue la persona más joven que sobrevivió
 
-Base de datos en Hive:
