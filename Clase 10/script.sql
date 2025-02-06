@@ -6,9 +6,6 @@ FROM titanic_nifi tn
 WHERE tn.survived = 1
 GROUP BY tn.sex;
 
-SELECT * FROM titanic_nifi tn;
-
-
 -- b) Cuántas personas sobrevivieron según cada clase (Pclass)
 SELECT
 	tn.pclass AS `Clase`,
@@ -32,6 +29,6 @@ SELECT
 	tn.age AS `edad`
 FROM titanic_nifi tn
 WHERE tn.survived = 1
-AND tn.age NOT NULL
+AND tn.age IS NOT NULL
 ORDER BY edad
 LIMIT 1;
