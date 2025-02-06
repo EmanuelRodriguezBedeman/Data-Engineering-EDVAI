@@ -4,6 +4,10 @@
 
 ![creacion base de datos](image.png)
 
+```sql
+CREATE DATABASE northwind_analytics;
+```
+
 2. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de clientes junto a la cantidad de productos vendidos ordenados de mayor a menor (campos customer_id, company_name, productos_vendidos). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/clientes). Pasar la password en un archivo.
 
 ```
@@ -48,10 +52,25 @@ sqoop import \
 
 5. Generar un archivo .py que permita mediante `Spark` insertar en `Hive` en la db `northwind_analytics` en la tabla `products_sold`, los datos del punto 2, pero solamente aquellas compañías en las que la cantidad de productos vendidos fue mayor al promedio.
 
+```sql
+CREATE EXTERNAL TABLE products_sold(
+    customer_id STRING,
+    company_name STRING,
+    productos_vendidos INTEGER
+    )
+COMMENT "Tabla products_sold ejercicio 9, punto 5"
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+location '/tables/external/products_sold';
+```
+
 ```python
 ```
 
 6. Generar un archivo .py que permita mediante `Spark` insertar en `Hive` en la tabla `products_sent`, los datos del punto 3 y 4, de manera tal que se vean las columnas (`order_id, shipped_date, company_name, phone, unit_price_discount (unit_price with discount), quantity, total_price unit_price_discount * quantity`). Solo de aquellos pedidos que hayan tenido descuento.
+
+```sql
+```
 
 ```python
 ```
