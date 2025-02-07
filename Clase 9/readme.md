@@ -163,4 +163,67 @@ df_final.write.insertInto('northwind_analytics.products_sent')
 7. Realizar un proceso automático en `Airflow` que orqueste los pipelines creados en los puntos anteriores. Crear un grupo para la etapa de ingest y otro para la etapa de process. Correrlo y mostrar una captura de pantalla (del DAG y del resultado en la base de datos)
 
 ```python
+from datetime import timedelta
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.dummy import DummyOperator
+from airflow.utils.dates import days_ago
+from airflow.utils.task_group import TaskGroup
+
+args = {
+    'owner': 'airflow',
+}
+
+with DAG(
+    dag_id='Northwind',
+    default_args=args,
+    schedule_interval='0 0 * * *',
+    start_date=days_ago(1),
+    catchup=False,
+    dagrun_timeout=timedelta(minutes=60),
+    tags=['ingest', 'transform'],
+    params={"example_key": "example_value"},
+) as dag:
+    
+    inicia_proceso = DummyOperator(
+        task_id='inicia_proceso',
+    )
+
+    with TaskGroup("Ingest", tooltip="Task group for the ingest process") as ingest:
+
+        ingest_clientes = BashOperator(
+            task_id="clientes",
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_clientes.sh '
+        )
+
+        ingest_envios = BashOperator(
+            task_id="envios",
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_envios.sh '
+        )
+
+        ingest_orders = BashOperator(
+            task_id="orders",
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_orders.sh '
+        )
+
+    with TaskGroup("Transform", tooltip="Task group for the ingest process") as transform:
+
+        ingest_clientes = BashOperator(
+            task_id="products_sold",
+            bash_command= 'ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/products_sold_transformation.py '
+        )
+
+        ingest_envios = BashOperator(
+            task_id="products_sent",
+            bash_command= 'ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/products_sent_transformation.py '
+        )
+
+    finaliza_proceso = DummyOperator(
+        task_id='finaliza_proceso',
+    )
+
+    inicia_proceso >> ingest >> transform >>finaliza_proceso
+
+if __name__ == "__main__":
+    dag.cli()
 ```
