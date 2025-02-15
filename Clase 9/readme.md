@@ -10,7 +10,7 @@ CREATE DATABASE northwind_analytics;
 
 2. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de clientes junto a la cantidad de productos vendidos ordenados de mayor a menor (campos customer_id, company_name, productos_vendidos). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/clientes). Pasar la password en un archivo.
 
-```
+```bash
 sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres \
@@ -24,7 +24,7 @@ sqoop import \
 
 3. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de órdenes junto a qué empresa realizó cada pedido (campos order_id, shipped_date, company_name, phone). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/envíos). Pasar la password en un archivo.
 
-```
+```bash
 sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres\
@@ -38,7 +38,7 @@ sqoop import \
 
 4. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de detalles de órdenes (campos order_id, unit_price, quantity, discount). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/order_details). Pasar la password en un archivo
 
-```
+```bash
 sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres\
@@ -193,27 +193,27 @@ with DAG(
 
         ingest_clientes = BashOperator(
             task_id="clientes",
-            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_clientes.sh '
+            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_clientes.sh '
         )
 
         ingest_envios = BashOperator(
             task_id="envios",
-            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_envios.sh '
+            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_envios.sh '
         )
 
         ingest_orders = BashOperator(
             task_id="orders",
-            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_orders.sh '
+            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_orders.sh '
         )
 
-    with TaskGroup("Transform", tooltip="Task group for the ingest process") as transform:
+    with TaskGroup("Transform", tooltip="Task group for the transform process") as transform:
 
-        ingest_clientes = BashOperator(
+        products_sold = BashOperator(
             task_id="products_sold",
             bash_command= 'ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/products_sold_transformation.py '
         )
 
-        ingest_envios = BashOperator(
+        products_sent = BashOperator(
             task_id="products_sent",
             bash_command= 'ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit --files /home/hadoop/hive/conf/hive-site.xml /home/hadoop/scripts/products_sent_transformation.py '
         )
