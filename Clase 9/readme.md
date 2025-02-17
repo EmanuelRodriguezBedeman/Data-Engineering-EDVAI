@@ -2,7 +2,7 @@
 
 1. Crear una base de datos en Hive llamada `northwind_analytics`
 
-![creacion base de datos](image.png)
+![creacion base de datos](imgs/image.png)
 
 ```sql
 CREATE DATABASE northwind_analytics;
@@ -11,7 +11,7 @@ CREATE DATABASE northwind_analytics;
 2. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de clientes junto a la cantidad de productos vendidos ordenados de mayor a menor (campos customer_id, company_name, productos_vendidos). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/clientes). Pasar la password en un archivo.
 
 ```bash
-sqoop import \
+/usr/lib/sqoop/bin/sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres \
     --password-file file:///home/hadoop/scripts/sqoop.pass \
@@ -25,7 +25,7 @@ sqoop import \
 3. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de órdenes junto a qué empresa realizó cada pedido (campos order_id, shipped_date, company_name, phone). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/envíos). Pasar la password en un archivo.
 
 ```bash
-sqoop import \
+/usr/lib/sqoop/bin/sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres\
     --password-file file:///home/hadoop/scripts/sqoop.pass \
@@ -39,7 +39,7 @@ sqoop import \
 4. Crear un script para importar un archivo .parquet de la base northwind que contenga la lista de detalles de órdenes (campos order_id, unit_price, quantity, discount). Luego ingestar el archivo a HDFS (carpeta /sqoop/ingest/order_details). Pasar la password en un archivo
 
 ```bash
-sqoop import \
+/usr/lib/sqoop/bin/sqoop import \
     --connect jdbc:postgresql://172.17.0.3:5432/northwind \
     --username postgres\
     --password-file file:///home/hadoop/scripts/sqoop.pass \
@@ -79,7 +79,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 # Data Load
-clientes = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/clientes/94a41d1c-f719-4f9e-aab3-14ad81f7f8be.parquet')
+clientes = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/clientes/')
 
 # Obtains the average of products sold
 promedio_ventas = clientes.agg({'productos_vendidos': 'avg'}).first()[0]
@@ -124,8 +124,8 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 # Data Load
-envios = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/envios/c3abbe17-806f-4338-8695-9d0fa16ee776.parquet')
-orders = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/order_details/c35a0c62-fb42-43dc-b213-25db8d1b9a78.parquet')
+envios = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/envios/')
+orders = spark.read.option('header', 'true').parquet('hdfs://172.17.0.2:9000/sqoop/ingest/order_details/')
 
 # Filters discount > 0
 orders_filtered = orders.filter(col('discount') > 0)
@@ -134,7 +134,7 @@ orders_filtered = orders.filter(col('discount') > 0)
 orders_price_discount = orders_filtered.withColumn('value_discount', round(col('unit_price') * col('discount'), 1))
 
 # Adds variable unit_price_discount
-orders_discounted = orders_value_discount.withColumn('unit_price_discount', col('unit_price') - col('value_discount'))
+orders_discounted = orders_price_discount.withColumn('unit_price_discount', col('unit_price') - col('value_discount'))
 
 # Adds variable total_price
 order_total = orders_discounted.withColumn('total_price', col('unit_price_discount') * col('quantity'))
@@ -193,17 +193,17 @@ with DAG(
 
         ingest_clientes = BashOperator(
             task_id="clientes",
-            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_clientes.sh '
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_clientes.sh '
         )
 
         ingest_envios = BashOperator(
             task_id="envios",
-            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_envios.sh '
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_envios.sh '
         )
 
         ingest_orders = BashOperator(
             task_id="orders",
-            bash_command= 'ssh hadoop@172.17.0.2 /usr/lib/sqoop/bin/sqoop /home/hadoop/scripts/ingest_orders.sh '
+            bash_command= '/usr/bin/sh /home/hadoop/scripts/ingest_orders.sh '
         )
 
     with TaskGroup("Transform", tooltip="Task group for the transform process") as transform:
@@ -227,3 +227,7 @@ with DAG(
 if __name__ == "__main__":
     dag.cli()
 ```
+
+![overhead dag](imgs/image-1.png)
+
+![full dag](imgs/image-2.png)
